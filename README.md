@@ -1,10 +1,10 @@
 # Turborepo starter
 
-This is an official Yarn v1 starter turborepo.
+This is an official npm starter turborepo.
 
 ## What's inside?
 
-This turborepo uses [Yarn](https://classic.yarnpkg.com/) as a package manager. It includes the following packages/apps:
+This turborepo uses [npm](https://www.npmjs.com/) as a package manager. It includes the following packages/apps:
 
 ### Apps and Packages
 
@@ -30,7 +30,7 @@ To build all apps and packages, run the following command:
 
 ```
 cd my-turborepo
-yarn run build
+npm run build
 ```
 
 ### Develop
@@ -39,7 +39,7 @@ To develop all apps and packages, run the following command:
 
 ```
 cd my-turborepo
-yarn run dev
+npm run dev
 ```
 
 ### Remote Caching
