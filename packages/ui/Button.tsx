@@ -1,4 +1,13 @@
-import * as React from "react";
-export const Button = () => {
-  return <button>Boop</button>;
-};
+import * as React from 'react'
+
+interface ButtonProps {
+  onClick?: () => void
+}
+
+export const Button = ({ onClick }: ButtonProps) => {
+  const handleClick = () => {
+    console.log('click')
+  }
+
+  return <button onClick={onClick || handleClick}>Boop</button>
+}
