@@ -51,7 +51,7 @@ importers:
         specifier: ^4.5.3
         version: 4.9.5
 
-  apps/site:
+  apps/docs:
     dependencies:
       next:
         specifier: ^13.4.1
