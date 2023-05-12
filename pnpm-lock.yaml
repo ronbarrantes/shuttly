@@ -22,6 +22,9 @@ importers:
 
   apps/dashboard:
     dependencies:
+      db:
+        specifier: workspace:*
+        version: link:../../packages/db
       next:
         specifier: ^13.4.1
         version: 13.4.1(react-dom@18.2.0)(react@18.2.0)
