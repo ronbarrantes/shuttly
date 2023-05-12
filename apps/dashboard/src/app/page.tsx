@@ -59,6 +59,16 @@ export default async function Home() {
             <Card key={card.title} {...card} />
           ))}
         </div>
+
+        <div className="flex flex-wrap max-w-3xl gap-2 m-auto text-white">
+          {passengers.map((passenger) => {
+            return (
+              <div key={passenger.id}>
+                <h1>{passenger.name}</h1>
+              </div>
+            )
+          })}
+        </div>
       </main>
     </div>
   )
