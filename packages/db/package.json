@@ -3,8 +3,13 @@
   "version": "0.0.0",
   "main": "index.js",
   "license": "MIT",
-  "publishConfig": {
-    "access": "public"
+  "scripts": {
+    "clean": "rm -rf .turbo node_modules",
+    "db:generate": "pnpm with-env prisma generate",
+    "db:push": "pnpm with-env prisma db push --skip-generate",
+    "dev:studio": "pnpm with-env prisma studio --port 5556",
+    "dev": "pscale connect shuttle dev --port 3309",
+    "with-env": "dotenv -e ../../.env --"
   },
   "dependencies": {
     "@prisma/client": "^4.14.0"
