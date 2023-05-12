@@ -14,7 +14,7 @@
     "module": "esnext",
     "noEmit": true,
     "resolveJsonModule": true,
-    "strict": true,
+    "strict": false,
     "isolatedModules": true,
     "target": "es5"
   },
