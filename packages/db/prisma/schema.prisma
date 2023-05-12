@@ -1,0 +1,157 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider     = "mysql"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
+}
+
+model Company {
+  id          String       @id @default(cuid())
+  name        String
+  address     String
+  phone       String
+  email       String
+  createdAt   DateTime     @default(now())
+  vehicles    Vehicle[]
+  rides       Ride[]
+  profiles    Account[]
+  passengers  Passenger[]
+  appDefaults AppDefaults?
+  invitation  Invitation[]
+
+  @@index([name])
+  @@index([id])
+}
+
+model AppDefaults {
+  id             String  @id @default(cuid())
+  companyId      String  @unique
+  logo           String?
+  bgColor        String?
+  highlightColor String?
+  textColor      String?
+  company        Company @relation(fields: [companyId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@index([companyId])
+}
+
+model Account {
+  id         String     @id @default(cuid())
+  userId     String     @unique
+  isVerified Boolean    @default(false)
+  email      String?
+  role       UserRoles?
+  companyId  String
+  createdAt  DateTime   @default(now())
+  driverId   String?    @unique
+  name       String?
+  phone      String
+  driver     Driver?
+  company    Company    @relation(fields: [companyId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@index([id])
+  @@index([email])
+  @@index([companyId])
+}
+
+model Invitation {
+  id         String   @id @default(cuid())
+  userId     String   @unique
+  email      String
+  companyId  String
+  createdAt  DateTime @default(now())
+  isAccepted Boolean  @default(false)
+  company    Company  @relation(fields: [companyId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@index([id])
+  @@index([email])
+  @@index([companyId])
+}
+
+model Driver {
+  id        String   @id @default(cuid())
+  accountId String   @unique
+  name      String
+  phone     String
+  createdAt DateTime @default(now())
+  rides     Ride[]
+  vehicle   Vehicle?
+  Account   Account  @relation(fields: [accountId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@index([phone])
+  @@index([id])
+}
+
+model Vehicle {
+  id        String   @id @default(cuid())
+  driverId  String?  @unique
+  make      String
+  model     String
+  year      String
+  plate     String
+  companyId String
+  createdAt DateTime @default(now())
+  company   Company  @relation(fields: [companyId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  driver    Driver?  @relation(fields: [driverId], references: [id], onDelete: SetNull, onUpdate: NoAction)
+
+  @@index([plate])
+  @@index([companyId])
+  @@index([driverId])
+  @@index([year, make, model])
+}
+
+model Passenger {
+  id           String   @id @default(cuid())
+  name         String
+  phone        String
+  address      String
+  companyId    String
+  createdAt    DateTime @default(now())
+  email        String?
+  rides        Ride[]
+  shouldDelete Boolean  @default(true)
+  company      Company  @relation(fields: [companyId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@index([phone])
+  @@index([companyId])
+  @@index([name])
+}
+
+// TODO: check the cascade delete
+// cascade delete should be on the item
+// that is being deleted, not in the parent item
+
+// example ride contains the relation on delete for passenger
+// passenger does not contain the relation on delete for ride
+
+model Ride {
+  id            String    @id @default(cuid())
+  altAddress    String?
+  companyId     String
+  createdAt     DateTime  @default(now())
+  driverId      String?
+  passengerId   String
+  rideType      RideType
+  scheduledTime DateTime
+  passenger     Passenger @relation(fields: [passengerId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  company       Company   @relation(fields: [companyId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  driver        Driver?   @relation(fields: [driverId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@index([passengerId])
+  @@index([companyId])
+  @@index([driverId])
+}
+
+enum UserRoles {
+  admin
+  driver
+  staff
+}
+
+enum RideType {
+  pickup
+  dropoff
+}
