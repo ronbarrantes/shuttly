@@ -37,10 +37,6 @@ const getCompanies = async () => {
 export default async function Home() {
   const passengers = await getAllPeople()
 
-  // console.log('companies', companies)
-
-  console.log('PASSENGERS --->>', passengers)
-
   return (
     <div className="flex flex-col items-center justify-center min-h-screen py-2">
       <main className="w-auto px-4 pt-16 pb-8 mx-auto sm:pt-24 lg:px-8">
@@ -60,7 +56,7 @@ export default async function Home() {
           ))}
         </div>
 
-        <div className="flex flex-wrap max-w-3xl gap-2 m-auto text-white">
+        <div className="flex flex-wrap max-w-3xl gap-2 m-auto">
           {passengers.map((passenger) => {
             return (
               <div key={passenger.id}>
