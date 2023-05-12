@@ -1,9 +1,11 @@
 {
   "private": true,
+  "name": "shuttly",
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev",
     "lint": "turbo run lint",
+    "clean": "turbo run clean",
     "format": "prettier --write \"**/*.{ts,tsx,md}\""
   },
   "devDependencies": {
@@ -13,7 +15,6 @@
     "prettier-plugin-tailwindcss": "^0.1.11",
     "turbo": "^1.9.3"
   },
-  "name": "shuttly",
   "packageManager": "npm@8.6.0",
   "workspaces": [
     "apps/*",
