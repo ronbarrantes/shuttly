@@ -36,11 +36,10 @@ const getCompanies = async () => {
 
 export default async function Home() {
   const passengers = await getAllPeople()
-  const companies = await getCompanies()
 
-  // console.log('passengers', passengers)
+  // console.log('companies', companies)
 
-  console.log('companies', companies)
+  console.log('PASSENGERS --->>', passengers)
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen py-2">
