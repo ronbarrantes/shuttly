@@ -6,6 +6,9 @@
   "publishConfig": {
     "access": "public"
   },
+  "dependencies": {
+    "@prisma/client": "^4.14.0"
+  },
   "devDependencies": {
     "dotenv-cli": "^7.2.1",
     "prisma": "^4.14.0",
