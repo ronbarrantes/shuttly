@@ -56,14 +56,18 @@ export default async function Home() {
           ))}
         </div>
 
-        <div className="flex flex-wrap max-w-3xl gap-2 m-auto">
-          {passengers.map((passenger) => {
-            return (
-              <div key={passenger.id}>
-                <h1>{passenger.name}</h1>
-              </div>
-            )
-          })}
+        <div className="flex flex-wrap max-w-3xl gap-2 m-auto text-white">
+          {!!passengers.length ? (
+            passengers.map((passenger) => {
+              return (
+                <div key={passenger.id}>
+                  <h1>{passenger.name}</h1>
+                </div>
+              )
+            })
+          ) : (
+            <p>No passenger found</p>
+          )}
         </div>
       </main>
     </div>
