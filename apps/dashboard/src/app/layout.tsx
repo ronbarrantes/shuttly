@@ -1,15 +1,18 @@
-import "../styles/globals.css";
+import { ClerkProvider } from '@clerk/nextjs'
+import '../styles/globals.css'
 // include styles from the ui package
-import "ui/styles.css";
+import 'ui/styles.css'
 
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode;
+  children: React.ReactNode
 }) {
   return (
-    <html lang="en" className="bg-zinc-900">
-      <body>{children}</body>
-    </html>
-  );
+    <ClerkProvider>
+      <html lang="en" className="bg-zinc-900">
+        <body>{children}</body>
+      </html>
+    </ClerkProvider>
+  )
 }
