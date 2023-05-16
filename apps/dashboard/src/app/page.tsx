@@ -1,7 +1,7 @@
 import { Metadata } from 'next'
 import { Button, Card } from 'ui'
 import { prisma } from 'db'
-import Header from './Header'
+import Header from './components/Header'
 
 const CARD_CONTENT = [
   {
@@ -27,11 +27,6 @@ export const metadata: Metadata = {
 
 const getAllPeople = async () => {
   const passengers = await prisma.passenger.findMany()
-  return passengers
-}
-
-const getCompanies = async () => {
-  const passengers = await prisma.company.findMany()
   return passengers
 }
 
