@@ -121,7 +121,7 @@ importers:
         specifier: ^4.9.5
         version: 4.9.5
 
-  apps/native:
+  apps/driver:
     dependencies:
       expo:
         specifier: ^48.0.16
