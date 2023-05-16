@@ -5,5 +5,8 @@
   "license": "MIT",
   "publishConfig": {
     "access": "public"
+  },
+  "dependencies": {
+    "@clerk/nextjs": "^4.18.0"
   }
 }
