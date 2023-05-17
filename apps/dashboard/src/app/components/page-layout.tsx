@@ -12,3 +12,13 @@ export const PageLayout = (
     </main>
   )
 }
+
+export const PageLayout2 = (props: PropsWithChildren) => {
+  return (
+    <main className="flex h-screen justify-center ">
+      <div className="w-full overflow-y-scroll border-x border-slate-500 md:max-w-2xl">
+        {props.children}
+      </div>
+    </main>
+  )
+}
