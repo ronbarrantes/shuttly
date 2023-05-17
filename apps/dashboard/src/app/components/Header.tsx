@@ -1,7 +1,7 @@
 'use client'
 import { SignedIn, SignedOut, SignInButton, UserButton } from '@clerk/nextjs'
 
-function Header() {
+export const Header = () => {
   'use client'
   return (
     <header
@@ -19,5 +19,3 @@ function Header() {
     </header>
   )
 }
-
-export default Header
