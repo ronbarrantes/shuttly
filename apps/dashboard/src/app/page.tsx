@@ -1,5 +1,5 @@
 import { Metadata } from 'next'
-import { Button, Card, Table, createColumnHelper } from 'ui'
+import { Button, Card } from 'ui'
 import { prisma } from 'db'
 import { PageLayout } from './components/page-layout'
 import { DashboardTable } from './components/DashboardTable'

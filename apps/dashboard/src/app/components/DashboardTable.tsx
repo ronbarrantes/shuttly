@@ -1,7 +1,10 @@
 'use client'
 
 import type { Ride, Passenger } from 'db'
-import { Button, Card, Table, createColumnHelper } from 'ui'
+import { Button, Card } from 'ui'
+
+import { Table, createColumnHelper } from './react-table'
+
 import { InferredRide } from '../page'
 import dayjs from 'dayjs'
 
