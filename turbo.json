@@ -3,8 +3,8 @@
   "globalDependencies": ["**/.env.*local"],
   "pipeline": {
     "build": {
-      "dependsOn": ["^db:generate", "^build"],
-      "outputs": ["dist/**", ".next/**", "!.next/cache/**"]
+      "dependsOn": ["^build", "^db:generate"],
+      "outputs": ["dist/**", ".next/**"]
     },
     "lint": {},
     "check-types": {},
@@ -17,7 +17,7 @@
       "cache": false
     },
     "db:generate": {
-      "cache": false
+      "inputs": ["db/schema.prisma"]
     },
     "db:push": {
       "cache": false
