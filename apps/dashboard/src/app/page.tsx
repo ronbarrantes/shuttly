@@ -8,13 +8,20 @@ export const metadata: Metadata = {
   title: 'Web - Turborepo Example',
 }
 
-const getAllPeople = async () => {
-  const passengers = await prisma.passenger.findMany()
-  return passengers
+const getAllRides = async () => {
+  const rides = await prisma.ride.findMany({
+    include: {
+      driver: true,
+      passenger: true,
+    },
+  })
+  return rides
 }
 
+export type InferredRide = Awaited<ReturnType<typeof getAllRides>>
+
 export default async function Home() {
-  const passengers = await getAllPeople()
+  const rides = await getAllRides()
 
   return (
     <PageLayout title="Dashboard">
@@ -24,7 +31,7 @@ export default async function Home() {
           Turborepo Example
         </span>
       </h1>
-      <DashboardTable passengers={passengers} />
+      <DashboardTable rides={rides} />
     </PageLayout>
   )
 }
