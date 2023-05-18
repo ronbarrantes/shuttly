@@ -7,7 +7,7 @@
     "outDir": "./dist"
   },
   "exclude": ["node_modules", "dist/**/*"],
-  "extends": "tsconfig/base.json",
+  "extends": "../tsconfig/base.json",
   // "extends": "tsconfig/react-library.json",
   "include": ["index.ts"]
 }
