@@ -1,25 +1,8 @@
 import { Metadata } from 'next'
-import { Button, Card } from 'ui'
+import { Button, Card, Table, createColumnHelper } from 'ui'
 import { prisma } from 'db'
 import { PageLayout } from './components/page-layout'
-
-const CARD_CONTENT = [
-  {
-    title: 'Caching Tasks',
-    href: 'https://turbo.build/repo/docs/core-concepts/caching',
-    cta: 'Read More',
-  },
-  {
-    title: 'Running Tasks',
-    href: 'https://turbo.build/repo/docs/core-concepts/monorepos/running-tasks',
-    cta: 'Read More',
-  },
-  {
-    title: 'Configuration Options',
-    href: 'https://turbo.build/repo/docs/reference/configuration',
-    cta: 'Read More',
-  },
-]
+import { DashboardTable } from './components/DashboardTable'
 
 export const metadata: Metadata = {
   title: 'Web - Turborepo Example',
@@ -41,9 +24,7 @@ export default async function Home() {
           Turborepo Example
         </span>
       </h1>
-      <div className="mx-auto mt-5 max-w-xl sm:flex sm:justify-center md:mt-8">
-        <Button />
-      </div>
+      <DashboardTable passengers={passengers} />
     </PageLayout>
   )
 }
