@@ -13,6 +13,7 @@
     "@clerk/nextjs": "^4.18.0",
     "db": "workspace:*",
     "next": "^13.4.2",
+    "dayjs": "workspace:*",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "ui": "workspace:*"
