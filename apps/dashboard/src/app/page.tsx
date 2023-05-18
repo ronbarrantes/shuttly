@@ -14,11 +14,12 @@ const getAllRides = async () => {
       driver: true,
       passenger: true,
     },
+    take: 10, // for now, get all of them later
   })
   return rides
 }
 
-export type InferredRide = Awaited<ReturnType<typeof getAllRides>>
+export type InferredRide = Awaited<ReturnType<typeof getAllRides>>[0]
 
 export default async function Home() {
   const rides = await getAllRides()

@@ -10,7 +10,7 @@ interface DashboardTableProps {
 }
 
 export const DashboardTable = ({ rides }: DashboardTableProps) => {
-  const columnHelper = createColumnHelper<InferredRide[0]>()
+  const columnHelper = createColumnHelper<InferredRide>()
 
   // What do I wanna display
 
