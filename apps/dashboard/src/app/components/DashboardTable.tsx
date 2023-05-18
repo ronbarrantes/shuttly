@@ -1,16 +1,61 @@
 'use client'
 
-import { type Passenger } from 'db'
+import type { Ride, Passenger } from 'db'
 import { Button, Card, Table, createColumnHelper } from 'ui'
+import { InferredRide } from '../page'
+import dayjs from 'dayjs'
 
 interface DashboardTableProps {
-  passengers: Passenger[]
+  rides: InferredRide[]
 }
 
-export const DashboardTable = ({ passengers }: DashboardTableProps) => {
-  'use client'
+export const DashboardTable = ({ rides }: DashboardTableProps) => {
+  const columnHelper = createColumnHelper<InferredRide[0]>()
 
-  const {} = createColumnHelper()
+  // What do I wanna display
 
-  return <h1>Hello</h1>
+  // passenger name
+  // passenger address
+  // time
+  // ride type
+  // ride status
+  // has driver
+
+  console.log('RIDES', rides)
+
+  const columns = [
+    columnHelper.accessor('passenger.name', {
+      header: () => <span>Passenger</span>,
+      cell: (info) => {
+        return `${info.row.original.passenger.name}`
+      },
+    }),
+
+    // columnHelper.accessor('passenger.name', {
+    //   cell: (info) => info.getValue(),
+    // }),
+    // columnHelper.accessor('passenger.', {
+    //   header: () => <span>Ride Type</span>,
+    //   cell: (info) => {
+    //     return `${info.row.original.rideType}`
+    //   },
+    // }),
+    columnHelper.accessor('passenger.address', {
+      header: () => <span>Address</span>,
+      cell: (info) => info.getValue(),
+    }),
+    columnHelper.accessor('scheduledTime', {
+      header: () => <span>Scheduled Time</span>,
+      cell: (info) => {
+        const time = dayjs(info.row.original.scheduledTime).format('h:mma')
+        return time
+      },
+    }),
+  ]
+
+  return (
+    <>
+      <Table columns={columns} data={rides} />
+    </>
+  )
 }
