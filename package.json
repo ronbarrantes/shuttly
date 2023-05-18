@@ -12,9 +12,9 @@
     "eslint": "^7.32.0",
     "eslint-config-custom": "workspace:*",
     "eslint-plugin-simple-import-sort": "^10.0.0",
-    "prettier": "^2.7.1",
-    "prettier-plugin-tailwindcss": "^0.1.11",
-    "turbo": "^1.9.6"
+    "prettier": "^2.8.8",
+    "prettier-plugin-tailwindcss": "^0.1.13",
+    "turbo": "^1.9.7"
   },
   "packageManager": "pnpm@7.15.0"
 }
