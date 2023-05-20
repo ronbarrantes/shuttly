@@ -1,4 +1,4 @@
-import { authMiddleware } from '@clerk/nextjs'
+import { authMiddleware, currentUser } from '@clerk/nextjs'
 import { NextResponse } from 'next/server'
 
 export default authMiddleware({
@@ -9,8 +9,6 @@ export default authMiddleware({
       signInUrl.searchParams.set('redirect_url', req.url)
       return NextResponse.redirect(signInUrl)
     }
-
-    console.log('METADATA ====>>', auth.user?.privateMetadata)
 
     // console.log('FROM MIDDLEWARE ===', auth.userId)
 
@@ -27,10 +25,21 @@ export default authMiddleware({
 
     // handle users who aren't in an organization
     // rededirect them to organization selection page
-    if (!auth.orgId && req.nextUrl.pathname !== '/invitation') {
+
+    console.log('PRIVATE ====>>>', auth.user?.privateMetadata.companyId)
+
+    if (
+      !auth.user?.privateMetadata.companyId &&
+      req.nextUrl.pathname !== '/invitation'
+    ) {
       const orgSelection = new URL('/invitation', req.url)
       return NextResponse.redirect(orgSelection)
     }
+
+    // if (!auth.orgId && req.nextUrl.pathname !== '/invitation') {
+    //   const orgSelection = new URL('/invitation', req.url)
+    //   return NextResponse.redirect(orgSelection)
+    // }
   },
 })
 

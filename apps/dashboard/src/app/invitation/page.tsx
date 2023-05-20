@@ -5,6 +5,7 @@ import {} from 'react'
 import { auth, currentUser, withUser, clerkClient } from '@clerk/nextjs'
 
 import { prisma } from 'db'
+import { AddMetadataCard } from './AddMetadata'
 
 export type UserInfo = {
   userId: string
@@ -19,6 +20,7 @@ export type AcceptInvitationFunction = ({
 }: UserInfo) => Promise<void>
 
 export default async function Invitation() {
+  // const { userId } = auth()
   const user = await currentUser()
   const userEmail = user?.emailAddresses[0].emailAddress
 
@@ -31,6 +33,25 @@ export default async function Invitation() {
       },
     })
     return invitation
+  }
+
+  const getAccount = async (userId: string) => {
+    'use server'
+
+    const account = await prisma.account.findUnique({
+      where: {
+        userId: userId,
+      },
+      include: {
+        company: {
+          select: {
+            name: true,
+          },
+        },
+      },
+    })
+
+    return account
   }
 
   const acceptInvitation: AcceptInvitationFunction = async ({
@@ -63,10 +84,12 @@ export default async function Invitation() {
         },
       })
 
-    console.log('EMAIL', userEmail)
+    console.log('EMAIL', userId)
+    console.log('COMPANY', companyId)
+    console.log('INVITATION', invitationId)
 
     try {
-      const [account] = await prisma.$transaction([
+      const [account, _invitation] = await prisma.$transaction([
         createAccount(),
         deleteInvitation(),
       ])
@@ -86,11 +109,60 @@ export default async function Invitation() {
   }
 
   const invitation = await getInvitation()
+  const currentAccount = await getAccount(user!.id)
+
+  const addMetadata = async (userId: string) => {
+    'use server'
+
+    // const currentAccount = await prisma.account.findUnique({
+    //   where: {
+    //     userId: userId,
+    //   },
+    //   include: {
+    //     company: {
+    //       select: {
+    //         name: true,
+    //       },
+    //     },
+    //   },
+    // })
+
+    if (!currentAccount) return
+
+    // console.log('CURRENT ACCOUNT', currentAccount)
+
+    const account = currentAccount
+
+    await clerkClient.users.updateUserMetadata(userId, {
+      publicMetadata: {
+        companyName: account.company.name,
+        accountId: account.id,
+      },
+      privateMetadata: {
+        companyId: account.companyId,
+      },
+    })
+  }
+
+  console.log('INVITATION', user?.publicMetadata)
+
+  if (currentAccount) {
+    // addMetadata(user!.id)
+    return (
+      <div>
+        <p>Welcome</p>
+        <p>{userEmail}</p>
+        <p></p>
+        <AddMetadataCard userId={user!.id} addMetadata={addMetadata} />
+      </div>
+    )
+  }
 
   if (!invitation)
     return (
       <div>
         <p>Welcome</p>
+
         <p>No invitation found</p>
       </div>
     )
@@ -99,6 +171,7 @@ export default async function Invitation() {
     <div>
       <p>Welcome</p>
       <p>{userEmail}</p>
+      {/* <p></p> */}
       <InvitationCard
         userInfo={{
           userId: user!.id,

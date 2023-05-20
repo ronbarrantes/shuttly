@@ -1,9 +1,7 @@
 'use client'
 
-import { useEffect, useState } from 'react'
 // import { useUser, useAuth, useClerk } from '@clerk/nextjs'
 
-import { Invitation } from 'db'
 import { AcceptInvitationFunction, UserInfo } from './page'
 
 type InvitationCardProps = {
@@ -11,12 +9,15 @@ type InvitationCardProps = {
   acceptInvitation: AcceptInvitationFunction
 }
 
-export const InvitationCard = ({ acceptInvitation }: InvitationCardProps) => {
+export const InvitationCard = ({
+  acceptInvitation,
+  userInfo,
+}: InvitationCardProps) => {
   const handleAcceptInvitation = async () => {
-    const accepted = await acceptInvitation({
-      userId: 'userId',
-      companyId: 'companyId',
-      invitationId: 'invitationId',
+    await acceptInvitation({
+      userId: userInfo.userId,
+      companyId: userInfo.companyId,
+      invitationId: userInfo.invitationId,
     })
   }
 
