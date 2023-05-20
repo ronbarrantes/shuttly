@@ -2,7 +2,7 @@ import { InvitationCard } from './InvitationCard'
 
 import {} from 'react'
 
-import { auth, currentUser, withUser } from '@clerk/nextjs'
+import { auth, currentUser, withUser, clerkClient } from '@clerk/nextjs'
 
 import { prisma } from 'db'
 
@@ -17,12 +17,6 @@ export type AcceptInvitationFunction = ({
   companyId,
   invitationId,
 }: UserInfo) => Promise<void>
-
-// Promise<{
-//   accountId: string
-//   companyId: string
-//   companyName: string
-// }>
 
 export default async function Invitation() {
   const user = await currentUser()
@@ -71,20 +65,24 @@ export default async function Invitation() {
 
     console.log('EMAIL', userEmail)
 
-    // try {
-    //   const [account] = await prisma.$transaction([
-    //     createAccount(),
-    //     deleteInvitation(),
-    //   ])
+    try {
+      const [account] = await prisma.$transaction([
+        createAccount(),
+        deleteInvitation(),
+      ])
 
-    //   return {
-    //     accountId: account.id,
-    //     companyId: account.companyId,
-    //     companyName: account.company.name,
-    //   }
-    // } catch (error) {
-    //   throw new Error('Something went wrong')
-    // }
+      await clerkClient.users.updateUserMetadata(user!.id, {
+        publicMetadata: {
+          companyName: account.company.name,
+          accountId: account.id,
+        },
+        privateMetadata: {
+          companyId: account.companyId,
+        },
+      })
+    } catch (error) {
+      throw new Error('Something went wrong')
+    }
   }
 
   const invitation = await getInvitation()
