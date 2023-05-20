@@ -1,11 +1,8 @@
 import { InvitationCard } from './InvitationCard'
 
-import {} from 'react'
-
-import { auth, currentUser, withUser, clerkClient } from '@clerk/nextjs'
+import { currentUser, clerkClient } from '@clerk/nextjs'
 
 import { prisma } from 'db'
-import { AddMetadataCard } from './AddMetadata'
 
 export type UserInfo = {
   userId: string
@@ -33,25 +30,6 @@ export default async function Invitation() {
       },
     })
     return invitation
-  }
-
-  const getAccount = async (userId: string) => {
-    'use server'
-
-    const account = await prisma.account.findUnique({
-      where: {
-        userId: userId,
-      },
-      include: {
-        company: {
-          select: {
-            name: true,
-          },
-        },
-      },
-    })
-
-    return account
   }
 
   const acceptInvitation: AcceptInvitationFunction = async ({
@@ -90,7 +68,8 @@ export default async function Invitation() {
         deleteInvitation(),
       ])
 
-      await clerkClient.users.updateUserMetadata(user!.id, {
+      // move this out of the try onto it's own try catch
+      await clerkClient.users.updateUserMetadata(userId, {
         publicMetadata: {
           companyName: account.company.name,
           accountId: account.id,
@@ -102,53 +81,13 @@ export default async function Invitation() {
     } catch (error) {
       throw new Error('Something went wrong')
     }
+
+    // NEED TO ADD A REDIRECT HERE
+
+    // return router.push('/dashboard')
   }
 
   const invitation = await getInvitation()
-  const currentAccount = await getAccount(user!.id)
-
-  const addMetadata = async (userId: string) => {
-    'use server'
-
-    // const currentAccount = await prisma.account.findUnique({
-    //   where: {
-    //     userId: userId,
-    //   },
-    //   include: {
-    //     company: {
-    //       select: {
-    //         name: true,
-    //       },
-    //     },
-    //   },
-    // })
-
-    if (!currentAccount) return
-
-    const account = currentAccount
-
-    await clerkClient.users.updateUserMetadata(userId, {
-      publicMetadata: {
-        companyName: account.company.name,
-        accountId: account.id,
-      },
-      privateMetadata: {
-        companyId: account.companyId,
-      },
-    })
-  }
-
-  if (currentAccount) {
-    // addMetadata(user!.id)
-    return (
-      <div>
-        <p>Welcome</p>
-        <p>{userEmail}</p>
-        <p></p>
-        <AddMetadataCard userId={user!.id} addMetadata={addMetadata} />
-      </div>
-    )
-  }
 
   if (!invitation)
     return (
@@ -163,7 +102,6 @@ export default async function Invitation() {
     <div>
       <p>Welcome</p>
       <p>{userEmail}</p>
-      {/* <p></p> */}
       <InvitationCard
         userInfo={{
           userId: user!.id,
