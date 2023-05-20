@@ -3,7 +3,7 @@ import '../styles/globals.css'
 // include styles from the ui package
 import 'ui/styles.css'
 import { Footer } from './components/footer'
-import { Header } from './components/header'
+import { Header } from './components/Header'
 
 export default function RootLayout({
   children,
