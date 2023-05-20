@@ -1,39 +1,39 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { useUser } from '@clerk/nextjs'
+// import { useUser, useAuth, useClerk } from '@clerk/nextjs'
 
 import { Invitation } from 'db'
+import { AcceptInvitationFunction, UserInfo } from './page'
 
 type InvitationCardProps = {
-  userId?: string
-  getInvitation: (email: string) => Promise<Invitation | null>
+  userInfo: UserInfo
+  acceptInvitation: AcceptInvitationFunction
 }
 
-export const InvitationCard = ({ getInvitation }: InvitationCardProps) => {
-  const { user } = useUser()
-
-  console.log('USER', user?.emailAddresses[0].emailAddress)
-
-  const [invitation, setInvitation] = useState<Invitation | null>(null)
-
-  useEffect(() => {
-    const fetchInvitation = async () => {
-      if (!user?.emailAddresses[0].emailAddress) {
-        return null
-      }
-
-      const invitation = await getInvitation(
-        user?.emailAddresses[0].emailAddress
-      )
-      setInvitation(invitation)
-    }
-    fetchInvitation()
-  }, [getInvitation, user?.emailAddresses])
+export const InvitationCard = ({ acceptInvitation }: InvitationCardProps) => {
+  const handleAcceptInvitation = async () => {
+    const accepted = await acceptInvitation({
+      userId: 'userId',
+      companyId: 'companyId',
+      invitationId: 'invitationId',
+    })
+  }
 
   return (
     <div>
-      <p>USER ID {invitation?.id}</p>
+      <p>Invitation</p>{' '}
+      <div>
+        <p>Click the button to accept invitation</p>
+        <button
+          // type="button"
+          className="rounded bg-blue-600 px-4 py-2 font-bold text-white"
+          onClick={handleAcceptInvitation}
+        >
+          Accept Invitation
+        </button>
+      </div>
+      {/* <p>USER ID {invitation?.id}</p> */}
     </div>
   )
 }
