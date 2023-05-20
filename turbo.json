@@ -21,6 +21,10 @@
     },
     "db:push": {
       "cache": false
+    },
+    "ui": {
+      "cache": false,
+      "persistent": true
     }
   },
   "globalEnv": [
