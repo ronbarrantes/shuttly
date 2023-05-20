@@ -1,4 +1,4 @@
-import { authMiddleware, currentUser } from '@clerk/nextjs'
+import { authMiddleware, clerkClient } from '@clerk/nextjs'
 import { NextResponse } from 'next/server'
 
 export default authMiddleware({
@@ -10,36 +10,24 @@ export default authMiddleware({
       return NextResponse.redirect(signInUrl)
     }
 
-    // console.log('FROM MIDDLEWARE ===', auth.userId)
-
-    // let companyId = null
-
-    // if (auth.userId) {
-    //   companyId =
-    //     await prisma.$executeRaw`SELECT id FROM Account WHERE "userId" = ${auth.userId}`
-    // }
-
-    // console.log('FROM MIDDLEWARE ===', companyId)
-
-    // let userId = null
-
-    // handle users who aren't in an organization
-    // rededirect them to organization selection page
-
-    console.log('PRIVATE ====>>>', auth.user?.privateMetadata.companyId)
+    let usr = null
+    if (auth.userId) usr = await clerkClient.users.getUser(auth.userId)
 
     if (
-      !auth.user?.privateMetadata.companyId &&
+      !usr?.privateMetadata.companyId &&
       req.nextUrl.pathname !== '/invitation'
     ) {
-      const orgSelection = new URL('/invitation', req.url)
-      return NextResponse.redirect(orgSelection)
+      const invitation = new URL('/invitation', req.url)
+      return NextResponse.redirect(invitation)
     }
 
-    // if (!auth.orgId && req.nextUrl.pathname !== '/invitation') {
-    //   const orgSelection = new URL('/invitation', req.url)
-    //   return NextResponse.redirect(orgSelection)
-    // }
+    if (
+      usr?.privateMetadata.companyId &&
+      req.nextUrl.pathname === '/invitation'
+    ) {
+      const dashboard = new URL('/', req.url)
+      return NextResponse.redirect(dashboard)
+    }
   },
 })
 

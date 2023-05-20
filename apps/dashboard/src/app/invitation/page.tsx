@@ -84,10 +84,6 @@ export default async function Invitation() {
         },
       })
 
-    console.log('EMAIL', userId)
-    console.log('COMPANY', companyId)
-    console.log('INVITATION', invitationId)
-
     try {
       const [account, _invitation] = await prisma.$transaction([
         createAccount(),
@@ -129,8 +125,6 @@ export default async function Invitation() {
 
     if (!currentAccount) return
 
-    // console.log('CURRENT ACCOUNT', currentAccount)
-
     const account = currentAccount
 
     await clerkClient.users.updateUserMetadata(userId, {
@@ -143,8 +137,6 @@ export default async function Invitation() {
       },
     })
   }
-
-  console.log('INVITATION', user?.publicMetadata)
 
   if (currentAccount) {
     // addMetadata(user!.id)
