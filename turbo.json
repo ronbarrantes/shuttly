@@ -25,6 +25,9 @@
     "ui": {
       "cache": false,
       "persistent": true
+    },
+    "studio": {
+      "cache": true
     }
   },
   "globalEnv": [
