@@ -24,8 +24,6 @@ export const DashboardTable = ({ rides }: DashboardTableProps) => {
   // ride status
   // has driver
 
-  console.log('RIDES', rides)
-
   const columns = [
     columnHelper.accessor('passenger.name', {
       header: () => <span>Passenger</span>,
