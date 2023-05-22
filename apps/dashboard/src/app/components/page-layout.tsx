@@ -15,7 +15,7 @@ export const PageLayout = (
       )}
     >
       <Header>{!props.noMenu && <MainNavigation />}</Header>
-      <main className="flex flex-col overflow-hidden border border-green-500 ">
+      <main className="flex grow flex-col overflow-hidden border border-green-500 ">
         <h1 className="text-xl font-semibold">{props.title}</h1>
         <div className="flex grow flex-col overflow-y-scroll border border-blue-500">
           {props.children}
