@@ -3,18 +3,6 @@
 import { prisma } from 'db'
 import { clerkClient } from '@clerk/nextjs'
 
-export type UserInfo = {
-  userId: string
-  companyId: string
-  invitationId: string
-}
-
-export type AcceptInvitationFunction = ({
-  userId,
-  companyId,
-  invitationId,
-}: UserInfo) => Promise<void>
-
 export const getInvitation = async (email?: string) => {
   'use server'
 
@@ -26,10 +14,14 @@ export const getInvitation = async (email?: string) => {
   return invitation
 }
 
-export const acceptInvitation: AcceptInvitationFunction = async ({
+export const acceptInvitation = async ({
   userId,
   companyId,
   invitationId,
+}: {
+  userId: string
+  companyId: string
+  invitationId: string
 }) => {
   'use server'
 
@@ -79,3 +71,5 @@ export const acceptInvitation: AcceptInvitationFunction = async ({
     // https://github.com/ronbarrantes/shuttly/issues/38
   }
 }
+
+export type AcceptInvitation = typeof acceptInvitation

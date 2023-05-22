@@ -1,10 +1,10 @@
 'use client'
 import { useTransition } from 'react'
-import { AcceptInvitationFunction, UserInfo } from '../actions/invitation'
+import { type AcceptInvitation } from '../actions/invitation'
 
 type InvitationCardProps = {
-  userInfo: UserInfo
-  acceptInvitation: AcceptInvitationFunction
+  userInfo: Parameters<AcceptInvitation>[0]
+  acceptInvitation: AcceptInvitation
 }
 
 export const InvitationCard = ({

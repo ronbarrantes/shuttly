@@ -1,6 +1,5 @@
 import { InvitationCard } from './InvitationCard'
-import { prisma } from 'db'
-import { currentUser, clerkClient } from '@clerk/nextjs'
+import { currentUser } from '@clerk/nextjs'
 import { getInvitation, acceptInvitation } from '../actions/invitation'
 
 export default async function Invitation() {
