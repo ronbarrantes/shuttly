@@ -16,7 +16,10 @@ const getAllRides = async () => {
       driver: true,
       passenger: true,
     },
-    take: 50, // for now, get all of them later
+    take: 10, // for now, get all of them later
+    orderBy: {
+      createdAt: 'desc',
+    },
   })
   return rides
 }
