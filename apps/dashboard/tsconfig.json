@@ -7,7 +7,7 @@
       "@/*": ["./src/*"],
       "@components/*": ["./src/app/components/*"],
       "@data/*": ["./src/client-data/data/*"],
-      "@actions/": ["./src/app/actions/*"]
+      "@actions/*": ["./src/app/actions/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
