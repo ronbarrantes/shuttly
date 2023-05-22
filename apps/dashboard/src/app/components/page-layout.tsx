@@ -14,9 +14,7 @@ export const PageLayout = (
         'flex h-screen w-screen flex-col border border-red-500 p-2 py-2'
       )}
     >
-      <Header>
-        <MainNavigation />
-      </Header>
+      <Header>{!props.noMenu && <MainNavigation />}</Header>
       <main className="flex flex-col overflow-hidden border border-green-500 ">
         <h1 className="text-xl font-semibold">{props.title}</h1>
         <div className="flex grow flex-col overflow-y-scroll border border-blue-500">
@@ -25,15 +23,5 @@ export const PageLayout = (
       </main>
       <Footer />
     </div>
-  )
-}
-
-export const SigninPageLayout = (props: PropsWithChildren) => {
-  return (
-    <main className="flex h-screen justify-center ">
-      <div className="w-full border-x border-slate-500 md:max-w-2xl">
-        {props.children}
-      </div>
-    </main>
   )
 }
