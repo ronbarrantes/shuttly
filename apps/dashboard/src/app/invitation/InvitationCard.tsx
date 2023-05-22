@@ -1,6 +1,6 @@
 'use client'
 import { useTransition } from 'react'
-import { AcceptInvitationFunction, UserInfo } from './page'
+import { AcceptInvitationFunction, UserInfo } from '../actions/invitation'
 
 type InvitationCardProps = {
   userInfo: UserInfo
