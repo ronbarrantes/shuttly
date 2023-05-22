@@ -1,4 +1,4 @@
-import type { AddPassenger, AddRide } from '../actions/ride'
+import type { AddPassenger, AddRide } from '@actions/ride'
 
 type AddRideFormProps = {
   addPassenger: AddPassenger

@@ -1,6 +1,6 @@
 import { InvitationCard } from './InvitationCard'
 import { currentUser } from '@clerk/nextjs'
-import { getInvitation, acceptInvitation } from '../actions/invitation'
+import { getInvitation, acceptInvitation } from '@actions/invitation'
 
 export default async function Invitation() {
   const user = await currentUser()
