@@ -1,8 +1,6 @@
 import { InvitationCard } from './InvitationCard'
-
-import { currentUser, clerkClient } from '@clerk/nextjs'
-
 import { prisma } from 'db'
+import { currentUser, clerkClient } from '@clerk/nextjs'
 
 export type UserInfo = {
   userId: string
@@ -68,7 +66,6 @@ export default async function Invitation() {
         deleteInvitation(),
       ])
 
-      // move this out of the try onto it's own try catch
       await clerkClient.users.updateUserMetadata(userId, {
         publicMetadata: {
           companyName: account.company.name,
@@ -80,11 +77,11 @@ export default async function Invitation() {
       })
     } catch (error) {
       throw new Error('Something went wrong')
+    } finally {
+      // revalidatePath('/invitation')
+      // TODO: add a redirect to '/'
+      // https://github.com/ronbarrantes/shuttly/issues/38
     }
-
-    // NEED TO ADD A REDIRECT HERE
-
-    // return router.push('/dashboard')
   }
 
   const invitation = await getInvitation()
@@ -93,7 +90,6 @@ export default async function Invitation() {
     return (
       <div>
         <p>Welcome</p>
-
         <p>No invitation found</p>
       </div>
     )
