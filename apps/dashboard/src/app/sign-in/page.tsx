@@ -1,10 +1,13 @@
 import { SignInButton } from '@clerk/nextjs'
+import { PageLayout } from '@components/page-layout'
 
 const SignInPage = () => {
   return (
-    <div>
-      <SignInButton />
-    </div>
+    <PageLayout title="" noMenu>
+      <div>
+        <SignInButton />
+      </div>
+    </PageLayout>
   )
 }
 
