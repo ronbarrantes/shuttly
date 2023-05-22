@@ -7,7 +7,6 @@ export type LinkItemsProps = {
 }
 
 export const mainNavLinks: LinkItemsProps = {
-  pathname: '/',
   links: [
     {
       name: 'Dashboard',

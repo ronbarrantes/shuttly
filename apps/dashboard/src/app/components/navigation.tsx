@@ -8,17 +8,18 @@ import {
   settingsPageLinks,
 } from '@data/links'
 
-const LinkItems = ({ links, pathname = '/' }: LinkItemsProps) => {
-  return (
-    <>
-      {links.map((link) => (
+const LinkItems = ({ links, pathname }: LinkItemsProps) => (
+  <>
+    {links.map((link) => {
+      const path = !pathname ? link.href : `${pathname}${link.href}`
+      return (
         <li key={link.name}>
-          <Link href={`${pathname}${link.href}`}>{link.name}</Link>
+          <Link href={path}>{link.name}</Link>
         </li>
-      ))}
-    </>
-  )
-}
+      )
+    })}
+  </>
+)
 
 export const MainNavigation = () => {
   return (
