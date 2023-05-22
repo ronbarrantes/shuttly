@@ -1,8 +1,6 @@
 import { ClerkProvider } from '@clerk/nextjs'
 import '../styles/globals.css'
 import 'ui/styles.css'
-import { Footer } from './components/footer'
-import { Header } from './components/Header'
 
 export default function RootLayout({
   children,

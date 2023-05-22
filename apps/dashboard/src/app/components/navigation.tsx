@@ -2,32 +2,11 @@ import Link from 'next/link'
 import React from 'react'
 import { SignedIn, SignedOut, SignInButton, UserButton } from '@clerk/nextjs'
 
-type LinkItemsProps = {
-  pathname?: string
-  links: {
-    name: string
-    href: string
-  }[]
-}
-
-const mainNavLinks: LinkItemsProps = {
-  pathname: '/',
-  links: [
-    {
-      name: 'Dashboard',
-      href: '/',
-    },
-    {
-      name: 'Settings',
-      href: '/settings',
-    },
-  ],
-}
-
-const settingsPageLinks: LinkItemsProps = {
-  pathname: '/settings',
-  links: [],
-}
+import {
+  type LinkItemsProps,
+  mainNavLinks,
+  settingsPageLinks,
+} from '@data/links'
 
 const LinkItems = ({ links, pathname = '/' }: LinkItemsProps) => {
   return (
@@ -54,24 +33,11 @@ export const MainNavigation = () => {
   )
 }
 
-export const SideNavigation = () => {
-  const uri = '/settings'
-
+export const SettingsPageNav = () => {
   return (
     <nav>
       <ul className="flex flex-col gap-3">
-        <li>
-          <Link href={`${uri}/`}>Personal</Link>
-        </li>
-        <li>
-          <Link href={`${uri}/`}>Company</Link>
-        </li>
-        <li>
-          <Link href={`${uri}/`}>Drivers</Link>
-        </li>
-        <li>
-          <Link href={`${uri}/`}>Drivers</Link>
-        </li>
+        <LinkItems {...settingsPageLinks} />
       </ul>
     </nav>
   )

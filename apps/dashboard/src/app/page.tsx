@@ -1,9 +1,9 @@
 import { Metadata } from 'next'
 import { Button, Card } from 'ui'
 import { prisma } from 'db'
-import { PageLayout } from './components/page-layout'
-import { DashboardTable } from './components/DashboardTable'
-import { AddRideForm } from './components/AddRideForm'
+import { PageLayout } from '@components/page-layout'
+import { DashboardTable } from '@components/DashboardTable'
+import { AddRideForm } from '@components/AddRideForm'
 import { addRide, addPassenger } from './actions/ride'
 
 export const metadata: Metadata = {
