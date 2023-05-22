@@ -11,9 +11,11 @@ export default authMiddleware({
       return NextResponse.redirect(signInUrl)
     }
 
+    // once authenticated, checks if user has an account
+    // it does this by checking if the user's metadata has been added to clerk
+    // this happens during the invitation process
     let usr = null
-    if (auth.userId)
-      usr = auth.userId && (await clerkClient.users.getUser(auth.userId))
+    if (auth.userId) usr = await clerkClient.users.getUser(auth.userId)
 
     if (
       auth.userId &&

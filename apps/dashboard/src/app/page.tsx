@@ -3,6 +3,8 @@ import { Button, Card } from 'ui'
 import { prisma } from 'db'
 import { PageLayout } from './components/page-layout'
 import { DashboardTable } from './components/DashboardTable'
+import { AddRideForm } from './components/AddRideForm'
+import { addRide, addPassenger } from './actions/ride'
 
 export const metadata: Metadata = {
   title: 'Web - Turborepo Example',
@@ -14,7 +16,7 @@ const getAllRides = async () => {
       driver: true,
       passenger: true,
     },
-    take: 10, // for now, get all of them later
+    take: 50, // for now, get all of them later
   })
   return rides
 }
@@ -26,6 +28,7 @@ export default async function Home() {
 
   return (
     <PageLayout title="Dashboard">
+      <AddRideForm addPassenger={addPassenger} addRide={addRide} />
       <DashboardTable rides={rides} />
     </PageLayout>
   )
