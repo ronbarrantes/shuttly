@@ -12,11 +12,7 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en">
-        <body className="flex h-screen w-screen flex-col border border-red-500 p-5">
-          <Header />
-          {children}
-          <Footer />
-        </body>
+        <body>{children}</body>
       </html>
     </ClerkProvider>
   )
