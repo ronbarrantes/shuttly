@@ -67,6 +67,9 @@ importers:
       zact:
         specifier: ^0.0.2
         version: 0.0.2(next@13.4.2)
+      zod:
+        specifier: ^3.21.4
+        version: 3.21.4
     devDependencies:
       '@types/node':
         specifier: ^18.16.10
