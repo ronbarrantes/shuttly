@@ -7,22 +7,39 @@ export const addPassenger = async ({}) => {
   console.log('ADDING A PASSENGER')
 }
 
-const RideObj = z.object({
-  name: z.string(),
-  address: z.string(),
-  phone: z.string(),
-  companyId: z.string(),
-  passengerId: z.string().optional(),
-  rides: z.array(
-    z.object({
-      rideType: z.enum(['pickup', 'dropoff']),
-      scheduledTime: z.date(),
-      altAddress: z.string().optional(),
-      driverId: z.string().optional(),
-      companyId: z.string(),
+const RideObj = z
+  .object({
+    name: z.string(),
+    address: z.string(),
+    phone: z.string(),
+    companyId: z.string(),
+    passengerId: z.string().optional(),
+    rides: z.array(
+      z.object({
+        rideType: z.enum(['pickup', 'dropoff']),
+        scheduledTime: z.date(),
+        altAddress: z.string().optional(),
+        driverId: z.string().optional(),
+        companyId: z.string(),
+      })
+    ),
+  })
+  .refine((data) => {
+    data.rides.map((ride) => {
+      return {
+        ...ride,
+        companyId: data.companyId,
+      }
     })
-  ),
-})
+    if (!!data.passengerId) {
+      return {
+        ...data,
+        name: z.string().optional(),
+        address: z.string().optional(),
+        phone: z.string().optional(),
+      }
+    }
+  })
 
 export const addRide = async ({
   name,
