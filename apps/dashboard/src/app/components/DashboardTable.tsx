@@ -5,8 +5,8 @@ import { Button, Card } from 'ui'
 
 import { Table, createColumnHelper } from './react-table'
 
-import { InferredRide } from '../page'
 import dayjs from 'dayjs'
+import { InferredRide } from '@actions/ride'
 
 interface DashboardTableProps {
   rides: InferredRide[]
