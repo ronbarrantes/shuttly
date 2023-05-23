@@ -20,17 +20,10 @@ const RideObj = z
         scheduledTime: z.date(),
         altAddress: z.string().optional(),
         driverId: z.string().optional(),
-        companyId: z.string(),
       })
     ),
   })
   .refine((data) => {
-    data.rides.map((ride) => {
-      return {
-        ...ride,
-        companyId: data.companyId,
-      }
-    })
     if (!!data.passengerId) {
       return {
         ...data,
@@ -48,10 +41,22 @@ export const addRide = async ({
   companyId,
   rides,
   passengerId,
-}: RideType) => {
-  if (!passengerId) {
+}: ZodRideType) => {
+  if (passengerId && passengerId.length) {
+    const theRides = await prisma.ride.createMany({
+      data: rides.map((ride) => {
+        return {
+          ...ride,
+          companyId,
+          passengerId,
+        }
+      }),
+    })
+
+    return theRides
   }
 
+  console.log('continuing with adding a passenger')
   const passenger = await prisma.passenger.create({
     data: {
       name,
@@ -59,7 +64,12 @@ export const addRide = async ({
       phone,
       companyId,
       rides: {
-        create: rides,
+        create: rides.map((ride) => {
+          return {
+            ...ride,
+            companyId,
+          }
+        }),
       },
     },
   })
@@ -82,4 +92,4 @@ export const getAllRides = async () => {
 export type AddPassenger = typeof addPassenger
 export type AddRide = typeof addRide
 export type InferredRide = Awaited<ReturnType<typeof getAllRides>>[0]
-export type RideType = z.infer<typeof RideObj>
+export type ZodRideType = z.infer<typeof RideObj>

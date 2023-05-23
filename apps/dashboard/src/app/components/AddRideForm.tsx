@@ -1,5 +1,5 @@
 'use client'
-import type { AddPassenger, AddRide } from '@actions/ride'
+import { type AddPassenger, type AddRide, ZodRideType } from '@actions/ride'
 import { Dialog } from '@components/Dialog'
 import {
   Controller,
@@ -23,11 +23,7 @@ export const AddRideForm = ({ addPassenger, addRide }: AddRideFormProps) => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm()
-
-  // = useForm({
-  //   defaultValues: {},
-  // })
+  } = useForm<ZodRideType>()
 
   return (
     <div>
@@ -40,20 +36,18 @@ export const AddRideForm = ({ addPassenger, addRide }: AddRideFormProps) => {
             onSubmit={handleSubmit((data) => console.log(data))}
           >
             <input
-              {...register('firstName')}
+              {...register('name')}
               placeholder="First Name"
               className="rounded-lg border border-black"
             />
             <input
-              {...register('lastName', { required: true })}
+              {...register('address')}
               className="rounded-lg border border-black"
             />
-            {errors.lastName && <p>Last name is required.</p>}
             <input
               className="rounded-lg border border-black"
-              {...register('age', { pattern: /\d+/ })}
+              {...register('phone')}
             />
-            {errors.age && <p>Please enter number for age.</p>}
             <input type="submit" />
           </form>
         </Dialog.Content>
