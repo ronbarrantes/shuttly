@@ -28,5 +28,5 @@ export const useKeepCount = () => {
   const decrement = () => dispatch({ type: 'decrement' })
   const remove = (item: number) =>
     dispatch({ type: 'remove', payload: { item } })
-  return { state, increment, decrement }
+  return { state, increment, decrement, remove }
 }
