@@ -1,11 +1,9 @@
 import { Metadata } from 'next'
-import { Button, Card } from 'ui'
-import { prisma } from 'db'
 import { PageLayout } from '@components/page-layout'
 import { DashboardTable } from '@components/DashboardTable'
 import { AddRideForm } from '@components/AddRideForm'
 import { addRide, addPassenger, getAllRides } from '@actions/ride'
-import { currentUser, withUser, useAuth, withSession } from '@clerk/nextjs'
+import { currentUser } from '@clerk/nextjs'
 
 export const metadata: Metadata = {
   title: 'Web - Turborepo Example',

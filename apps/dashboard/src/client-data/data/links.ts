@@ -19,6 +19,7 @@ export const mainNavLinks: LinkItemsProps = {
   ],
 }
 
+// TODO: add links
 export const settingsPageLinks: LinkItemsProps = {
   pathname: '/settings',
   links: [

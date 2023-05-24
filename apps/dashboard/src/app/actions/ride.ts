@@ -90,5 +90,5 @@ export const getAllRides = async () => {
 
 export type AddPassenger = typeof addPassenger
 export type AddRide = typeof addRide
-export type InferredRide = Awaited<ReturnType<typeof getAllRides>>[0]
+export type AllRides = Awaited<ReturnType<typeof getAllRides>>[0]
 export type ZodRideType = z.infer<typeof rideObj>

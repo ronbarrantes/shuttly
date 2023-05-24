@@ -5,15 +5,8 @@ import classNames from 'classnames'
 import { type AddPassenger, type AddRide, ZodRideType } from '@actions/ride'
 import { Dialog } from '@components/Dialog'
 import dayjs from 'dayjs'
-
-import {
-  Controller,
-  FormProvider,
-  useForm,
-  useFormContext,
-} from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import { useKeepCount } from '../hooks'
-import { revalidatePath } from 'next/cache'
 
 type AddRideFormProps = {
   addPassenger: AddPassenger
@@ -21,17 +14,11 @@ type AddRideFormProps = {
   companyId: string
 }
 
-type RideItem = ZodRideType['rides'][0]
-
 export const AddRideForm = ({
   addPassenger,
   addRide,
   companyId,
 }: AddRideFormProps) => {
-  // the form for now will have just the fields to edit
-  // but eventually it will have a search feature that will look for
-  // passengers that have already been added to the database
-  // if they're not in the database it will just add them without much fuzz
   const [pending, startTransition] = useTransition()
   const {
     count: rideCount,
@@ -44,12 +31,11 @@ export const AddRideForm = ({
   const loCountBound = rideCount.length <= 1
 
   const {
-    watch,
+    watch, // REMOVE LATER
     register,
-    control,
     reset,
     handleSubmit,
-    formState: { errors },
+    formState: { errors }, // REMOVE LATER
   } = useForm<ZodRideType>()
 
   const onSubmit = (data: ZodRideType) => {
