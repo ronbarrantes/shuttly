@@ -57,8 +57,8 @@ export const AddRideForm = ({
       const rides = rideCount.map((rideIdx) => data.rides[rideIdx])
       data = { ...data, companyId, rides }
       await addRide(data)
-      // reset()
-      // resetCount()
+      reset()
+      resetCount()
     })
   }
 
@@ -91,44 +91,25 @@ export const AddRideForm = ({
             {rideCount.map((rideIdx, idx) => {
               return (
                 <div key={`${rideIdx}-${idx}`}>
-                  <Controller
-                    name={`rides.${rideIdx}.rideType`}
-                    control={control}
-                    render={({ field }) => (
-                      <select
-                        {...field}
-                        className="rounded-lg border border-black"
-                        required
-                      >
-                        <option defaultChecked value="pickup">
-                          Pickup
-                        </option>
-                        <option value="dropoff">Dropoff</option>
-                      </select>
-                    )}
-                  />
-
-                  {
-                    // <input
-                    //   type="radio"
-                    //   value="pickup"
-                    //   {...register(`rides.${rideIdx}.rideType`, {
-                    //     required: true,
-                    //   })}
-                    // />
-                    // <input
-                    //   type="radio"
-                    //   value="dropoff"
-                    //   {...register(`rides.${rideIdx}.rideType`, {
-                    //     required: true,
-                    //   })}
-                    // />
-                    // <
-                  }
-
-                  {
-                    // create a controller for radio buttons for the ride type using a Controller component
-                  }
+                  <label htmlFor="field-pickup">
+                    <input
+                      {...register(`rides.${rideIdx}.rideType`)}
+                      type="radio"
+                      value="pickup"
+                      id="field-pickup"
+                      defaultChecked
+                    />
+                    Pickup
+                  </label>
+                  <label htmlFor="field-dropoff">
+                    <input
+                      {...register(`rides.${rideIdx}.rideType`)}
+                      type="radio"
+                      value="dropoff"
+                      id="field-dropoff"
+                    />
+                    Dropoff
+                  </label>
 
                   <input
                     type="datetime-local"
