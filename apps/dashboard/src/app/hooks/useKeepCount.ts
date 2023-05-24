@@ -6,6 +6,7 @@ type KeepCountAction =
   | { type: 'increment' }
   | { type: 'decrement' }
   | { type: 'remove'; payload: { item: number } }
+  | { type: 'reset' }
 
 const countReducer = (state: typeof initialState, action: KeepCountAction) => {
   switch (action.type) {
@@ -29,6 +30,9 @@ const countReducer = (state: typeof initialState, action: KeepCountAction) => {
         count: state.count.filter((item) => item !== action.payload.item),
       }
 
+    case 'reset':
+      return initialState
+
     default:
       throw new Error()
   }
@@ -40,5 +44,7 @@ export const useKeepCount = () => {
   const decrement = () => dispatch({ type: 'decrement' })
   const remove = (item: number) =>
     dispatch({ type: 'remove', payload: { item } })
-  return { count: state.count, increment, decrement, remove }
+
+  const reset = () => dispatch({ type: 'reset' })
+  return { count: state.count, increment, decrement, remove, reset }
 }

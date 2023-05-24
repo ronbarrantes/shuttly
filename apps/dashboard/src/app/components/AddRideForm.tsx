@@ -32,7 +32,12 @@ export const AddRideForm = ({
   // passengers that have already been added to the database
   // if they're not in the database it will just add them without much fuzz
   const [pending, startTransition] = useTransition()
-  const { count: rideCount, increment, remove } = useKeepCount()
+  const {
+    count: rideCount,
+    increment,
+    remove,
+    reset: resetCount,
+  } = useKeepCount()
 
   const hiCountBound = rideCount.length >= 4
   const loCountBound = rideCount.length <= 1
@@ -52,6 +57,7 @@ export const AddRideForm = ({
       data = { ...data, companyId, rides }
       await addRide(data)
       reset()
+      resetCount()
     })
   }
 
