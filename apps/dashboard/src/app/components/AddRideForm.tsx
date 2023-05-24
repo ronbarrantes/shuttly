@@ -27,7 +27,9 @@ export const AddRideForm = ({ addPassenger, addRide }: AddRideFormProps) => {
 
   // const [rideCount, setRideCount] = useState<number[]>([0])
   const { count: rideCount, increment, remove } = useKeepCount()
-  const disabledRideCount = rideCount.length <= 1
+
+  const hiCountBound = rideCount.length >= 4
+  const loCountBound = rideCount.length <= 1
 
   const {
     watch,
@@ -37,9 +39,12 @@ export const AddRideForm = ({ addPassenger, addRide }: AddRideFormProps) => {
   } = useForm<ZodRideType>()
 
   const onSubmit = (data: ZodRideType) => {
-    // console.log(data)
+    const rides = rideCount.map((rideIdx) => data.rides[rideIdx])
 
-    // const rides = data.rides.filter((ride) => )
+    data = {
+      ...data,
+      rides,
+    }
 
     addRide(data)
   }
@@ -76,8 +81,14 @@ export const AddRideForm = ({ addPassenger, addRide }: AddRideFormProps) => {
               <button
                 type="button"
                 aria-label="Add ride"
-                className="rounded-lg border border-black"
-                onClick={increment}
+                disabled={hiCountBound}
+                className={classNames(
+                  'rounded-lg border border-black',
+                  hiCountBound && 'opacity-50'
+                )}
+                onClick={() => {
+                  if (!hiCountBound) increment()
+                }}
               >
                 <PlusIcon className="h-5 w-5" />
               </button>
@@ -92,7 +103,6 @@ export const AddRideForm = ({ addPassenger, addRide }: AddRideFormProps) => {
             {rideCount.map((rideIdx, idx) => {
               return (
                 <div key={`${rideIdx}-${idx}`}>
-                  <span>{rideIdx}</span>
                   <input
                     type="text"
                     className="rounded-lg border border-black"
@@ -104,7 +114,8 @@ export const AddRideForm = ({ addPassenger, addRide }: AddRideFormProps) => {
                     type="date"
                     className="rounded-lg border border-black"
                     placeholder="Date"
-                    {...register(`rides.${rideIdx}.scheduledTime`)}
+                    {...(register(`rides.${rideIdx}.scheduledTime`),
+                    { required: true })}
                   />
 
                   <button
@@ -112,14 +123,14 @@ export const AddRideForm = ({ addPassenger, addRide }: AddRideFormProps) => {
                     aria-label="Remove ride"
                     className={classNames(
                       'rounded-lg border border-black',
-                      disabledRideCount && 'opacity-50'
+                      loCountBound && 'opacity-50'
                     )}
                     onClick={() => {
-                      if (rideCount.length > 1) {
+                      if (!loCountBound) {
                         remove(rideIdx)
                       }
                     }}
-                    disabled={disabledRideCount}
+                    disabled={loCountBound}
                   >
                     <MinusIcon className="h-5 w-5" />
                   </button>
