@@ -7,6 +7,7 @@ export default function RootLayout({
 }: {
   children: React.ReactNode
 }) {
+  // TODO: check if this is necessary
   return (
     <ClerkProvider>
       <html lang="en">
