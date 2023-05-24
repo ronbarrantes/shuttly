@@ -8,8 +8,6 @@ type KeepCountAction =
   | { type: 'remove'; payload: { item: number } }
 
 const countReducer = (state: typeof initialState, action: KeepCountAction) => {
-  console.log('INCREMENT STATE', state.count)
-
   switch (action.type) {
     case 'increment':
       return {

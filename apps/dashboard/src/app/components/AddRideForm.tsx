@@ -1,31 +1,36 @@
 'use client'
 import { PlusIcon, MinusIcon } from '@radix-ui/react-icons'
 import classNames from 'classnames'
-import { useState } from 'react'
 import { type AddPassenger, type AddRide, ZodRideType } from '@actions/ride'
 import { Dialog } from '@components/Dialog'
+import dayjs from 'dayjs'
+
 import {
   Controller,
   FormProvider,
   useForm,
-  // useFormContext,
+  useFormContext,
 } from 'react-hook-form'
 import { useKeepCount } from '../hooks'
 
 type AddRideFormProps = {
   addPassenger: AddPassenger
   addRide: AddRide
+  companyId: string
 }
 
 type RideItem = ZodRideType['rides'][0]
 
-export const AddRideForm = ({ addPassenger, addRide }: AddRideFormProps) => {
+export const AddRideForm = ({
+  addPassenger,
+  addRide,
+  companyId,
+}: AddRideFormProps) => {
   // the form for now will have just the fields to edit
   // but eventually it will have a search feature that will look for
   // passengers that have already been added to the database
   // if they're not in the database it will just add them without much fuzz
 
-  // const [rideCount, setRideCount] = useState<number[]>([0])
   const { count: rideCount, increment, remove } = useKeepCount()
 
   const hiCountBound = rideCount.length >= 4
@@ -34,19 +39,17 @@ export const AddRideForm = ({ addPassenger, addRide }: AddRideFormProps) => {
   const {
     watch,
     register,
+    control,
     handleSubmit,
     formState: { errors },
   } = useForm<ZodRideType>()
 
   const onSubmit = (data: ZodRideType) => {
     const rides = rideCount.map((rideIdx) => data.rides[rideIdx])
+    data = { ...data, rides }
 
-    data = {
-      ...data,
-      rides,
-    }
-
-    addRide(data)
+    console.log('DATA ---->>>', data)
+    // addRide(data)
   }
 
   return (
@@ -74,48 +77,35 @@ export const AddRideForm = ({ addPassenger, addRide }: AddRideFormProps) => {
               placeholder="Phone Number*"
               {...register('phone')}
             />
-
-            <hr />
-
-            <div className="flex gap-2">
-              <button
-                type="button"
-                aria-label="Add ride"
-                disabled={hiCountBound}
-                className={classNames(
-                  'rounded-lg border border-black',
-                  hiCountBound && 'opacity-50'
-                )}
-                onClick={() => {
-                  if (!hiCountBound) increment()
-                }}
-              >
-                <PlusIcon className="h-5 w-5" />
-              </button>
-            </div>
-
-            <div>
-              {rideCount.map((num) => (
-                <span key={`num${num}`}>{num}</span>
-              ))}
-            </div>
-
+            <hr />{' '}
             {rideCount.map((rideIdx, idx) => {
               return (
                 <div key={`${rideIdx}-${idx}`}>
-                  <input
-                    type="text"
-                    className="rounded-lg border border-black"
-                    placeholder="Ride type"
-                    {...register(`rides.${rideIdx}.rideType`)}
+                  <Controller
+                    name={`rides.${rideIdx}.rideType`}
+                    control={control}
+                    render={({ field }) => (
+                      <select
+                        {...field}
+                        className="rounded-lg border border-black"
+                        required
+                      >
+                        <option defaultChecked value={''}>
+                          Ride type
+                        </option>
+                        <option value="pickup">Pickup</option>
+                        <option value="dropoff">Dropoff</option>
+                      </select>
+                    )}
                   />
 
                   <input
-                    type="date"
+                    type="datetime-local"
                     className="rounded-lg border border-black"
                     placeholder="Date"
-                    {...(register(`rides.${rideIdx}.scheduledTime`),
-                    { required: true })}
+                    {...register(`rides.${rideIdx}.scheduledTime`, {
+                      required: true,
+                    })}
                   />
 
                   <button
@@ -132,17 +122,31 @@ export const AddRideForm = ({ addPassenger, addRide }: AddRideFormProps) => {
                     }}
                     disabled={loCountBound}
                   >
-                    <MinusIcon className="h-5 w-5" />
+                    <MinusIcon className="h-6 w-6" />
                   </button>
                 </div>
               )
             })}
-
             {
               // TODO: Add a driver dropdown if more than 1 driver
               // auto assign the one driver if there's only one
             }
-
+            <div className="flex gap-2">
+              <button
+                type="button"
+                aria-label="Add ride"
+                disabled={hiCountBound}
+                className={classNames(
+                  'rounded-lg border border-black',
+                  hiCountBound && 'opacity-50'
+                )}
+                onClick={() => {
+                  if (!hiCountBound) increment()
+                }}
+              >
+                <PlusIcon className="h-5 w-5" />
+              </button>
+            </div>
             <input type="submit" />
           </form>
         </Dialog.Content>
