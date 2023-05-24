@@ -1,6 +1,6 @@
 import { useReducer } from 'react'
 
-const initialState = { count: [0] }
+const initialState = { count: [0], lastIndex: 0 }
 
 type KeepCountAction =
   | { type: 'increment' }
@@ -8,15 +8,29 @@ type KeepCountAction =
   | { type: 'remove'; payload: { item: number } }
 
 const countReducer = (state: typeof initialState, action: KeepCountAction) => {
+  console.log('INCREMENT STATE', state.count)
+
   switch (action.type) {
     case 'increment':
-      return { count: [...state.count, state.count.length] }
+      return {
+        ...state,
+        lastIndex: state.lastIndex + 1,
+        count: [...state.count, state.lastIndex + 1],
+      }
     case 'decrement':
-      return { count: state.count.slice(0, state.count.length - 1) }
+      return {
+        ...state,
+        count: state.count.filter(
+          (item) => item !== state.count[state.count.length - 1]
+        ),
+      }
+
     case 'remove':
       return {
+        ...state,
         count: state.count.filter((item) => item !== action.payload.item),
       }
+
     default:
       throw new Error()
   }
@@ -28,5 +42,5 @@ export const useKeepCount = () => {
   const decrement = () => dispatch({ type: 'decrement' })
   const remove = (item: number) =>
     dispatch({ type: 'remove', payload: { item } })
-  return { state, increment, decrement, remove }
+  return { count: state.count, increment, decrement, remove }
 }
