@@ -36,8 +36,6 @@ const rideObj = z
   })
 
 export const addRide = async (rideInfo: ZodRideType) => {
-  console.log('RIDE INFO =====>>>>', rideInfo)
-
   // if (passengerId && passengerId.length) {
   //   const theRides = await prisma.ride.createMany({
   //     data: rides.map((ride) => {
@@ -52,7 +50,6 @@ export const addRide = async (rideInfo: ZodRideType) => {
   //   return theRides
   // }
 
-  console.log('continuing with adding a passenger')
   const passenger = await prisma.passenger.create({
     data: {
       name: rideInfo.name,
