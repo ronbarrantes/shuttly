@@ -1,7 +1,7 @@
 'use client'
 import { PlusIcon, MinusIcon } from '@radix-ui/react-icons'
 import classNames from 'classnames'
-import { useState, useReducer } from 'react'
+import { useState } from 'react'
 import { type AddPassenger, type AddRide, ZodRideType } from '@actions/ride'
 import { Dialog } from '@components/Dialog'
 import {
@@ -10,6 +10,7 @@ import {
   useForm,
   // useFormContext,
 } from 'react-hook-form'
+import { useKeepCount } from '../hooks'
 
 type AddRideFormProps = {
   addPassenger: AddPassenger
@@ -24,7 +25,8 @@ export const AddRideForm = ({ addPassenger, addRide }: AddRideFormProps) => {
   // passengers that have already been added to the database
   // if they're not in the database it will just add them without much fuzz
 
-  const [rideCount, setRideCount] = useState<number[]>([0])
+  // const [rideCount, setRideCount] = useState<number[]>([0])
+  const { count: rideCount, increment, remove } = useKeepCount()
   const disabledRideCount = rideCount.length <= 1
 
   const {
@@ -75,9 +77,7 @@ export const AddRideForm = ({ addPassenger, addRide }: AddRideFormProps) => {
                 type="button"
                 aria-label="Add ride"
                 className="rounded-lg border border-black"
-                onClick={() => {
-                  setRideCount((prev) => [...prev, prev[prev.length - 1] + 1])
-                }}
+                onClick={increment}
               >
                 <PlusIcon className="h-5 w-5" />
               </button>
@@ -116,12 +116,7 @@ export const AddRideForm = ({ addPassenger, addRide }: AddRideFormProps) => {
                     )}
                     onClick={() => {
                       if (rideCount.length > 1) {
-                        setRideCount((prev) => {
-                          // remove the current item
-                          // rideIdx
-
-                          return prev.slice(rideIdx, prev.length - 1)
-                        })
+                        remove(rideIdx)
                       }
                     }}
                     disabled={disabledRideCount}
