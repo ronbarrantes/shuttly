@@ -13,6 +13,7 @@ import {
   useFormContext,
 } from 'react-hook-form'
 import { useKeepCount } from '../hooks'
+import { revalidatePath } from 'next/cache'
 
 type AddRideFormProps = {
   addPassenger: AddPassenger
@@ -56,8 +57,8 @@ export const AddRideForm = ({
       const rides = rideCount.map((rideIdx) => data.rides[rideIdx])
       data = { ...data, companyId, rides }
       await addRide(data)
-      reset()
-      resetCount()
+      // reset()
+      // resetCount()
     })
   }
 
@@ -99,14 +100,35 @@ export const AddRideForm = ({
                         className="rounded-lg border border-black"
                         required
                       >
-                        <option defaultChecked value={''}>
-                          Ride type
+                        <option defaultChecked value="pickup">
+                          Pickup
                         </option>
-                        <option value="pickup">Pickup</option>
                         <option value="dropoff">Dropoff</option>
                       </select>
                     )}
                   />
+
+                  {
+                    // <input
+                    //   type="radio"
+                    //   value="pickup"
+                    //   {...register(`rides.${rideIdx}.rideType`, {
+                    //     required: true,
+                    //   })}
+                    // />
+                    // <input
+                    //   type="radio"
+                    //   value="dropoff"
+                    //   {...register(`rides.${rideIdx}.rideType`, {
+                    //     required: true,
+                    //   })}
+                    // />
+                    // <
+                  }
+
+                  {
+                    // create a controller for radio buttons for the ride type using a Controller component
+                  }
 
                   <input
                     type="datetime-local"

@@ -2,37 +2,37 @@
 
 import { prisma } from 'db'
 import { z } from 'zod'
+import { revalidatePath } from 'next/cache'
 
 export const addPassenger = async ({}) => {
   console.log('ADDING A PASSENGER')
 }
 
-const rideObj = z
-  .object({
-    name: z.string(),
-    address: z.string(),
-    phone: z.string(),
-    companyId: z.string(),
-    passengerId: z.string().optional(),
-    rides: z.array(
-      z.object({
-        rideType: z.enum(['pickup', 'dropoff']),
-        scheduledTime: z.date(),
-        altAddress: z.string().optional(),
-        driverId: z.string().optional(),
-      })
-    ),
-  })
-  .refine((data) => {
-    if (!!data.passengerId) {
-      return {
-        ...data,
-        name: z.string().optional(),
-        address: z.string().optional(),
-        phone: z.string().optional(),
-      }
-    }
-  })
+const rideObj = z.object({
+  name: z.string(),
+  address: z.string(),
+  phone: z.string(),
+  companyId: z.string(),
+  passengerId: z.string().optional(),
+  rides: z.array(
+    z.object({
+      rideType: z.enum(['pickup', 'dropoff']),
+      scheduledTime: z.date(),
+      altAddress: z.string().optional(),
+      driverId: z.string().optional(),
+    })
+  ),
+})
+// .refine((data) => {
+//   if (!!data.passengerId) {
+//     return {
+//       ...data,
+//       name: z.string().optional(),
+//       address: z.string().optional(),
+//       phone: z.string().optional(),
+//     }
+//   }
+// })
 
 export const addRide = async (rideInfo: ZodRideType) => {
   console.log('RIDE INFO =====>>>>', rideInfo)
@@ -51,23 +51,27 @@ export const addRide = async (rideInfo: ZodRideType) => {
   //   return theRides
   // }
 
-  // console.log('continuing with adding a passenger')
-  // const passenger = await prisma.passenger.create({
-  //   data: {
-  //     name,
-  //     address,
-  //     phone,
-  //     companyId,
-  //     rides: {
-  //       create: rides.map((ride) => {
-  //         return {
-  //           ...ride,
-  //           companyId,
-  //         }
-  //       }),
-  //     },
-  //   },
-  // })
+  console.log('continuing with adding a passenger')
+  const passenger = await prisma.passenger.create({
+    data: {
+      name: rideInfo.name,
+      address: rideInfo.address,
+      phone: rideInfo.phone,
+      companyId: rideInfo.companyId,
+
+      rides: {
+        create: rideInfo.rides.map((ride) => {
+          return {
+            ...ride,
+            scheduledTime: new Date(ride.scheduledTime),
+            companyId: rideInfo.companyId,
+          }
+        }),
+      },
+    },
+  })
+
+  revalidatePath('/')
 }
 
 export const getAllRides = async () => {
