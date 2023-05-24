@@ -2,6 +2,7 @@ import { authMiddleware, clerkClient } from '@clerk/nextjs'
 import { NextResponse } from 'next/server'
 
 export default authMiddleware({
+  publicRoutes: ['/sign-in'],
   afterAuth: async (auth, req, _evt) => {
     // handle users who aren't authenticated
     if (!auth.userId && !auth.isPublicRoute) {
@@ -10,10 +11,14 @@ export default authMiddleware({
       return NextResponse.redirect(signInUrl)
     }
 
+    // once authenticated, checks if user has an account
+    // it does this by checking if the user's metadata has been added to clerk
+    // this happens during the invitation process
     let usr = null
     if (auth.userId) usr = await clerkClient.users.getUser(auth.userId)
 
     if (
+      auth.userId &&
       !usr?.privateMetadata.companyId &&
       req.nextUrl.pathname !== '/invitation'
     ) {
@@ -32,5 +37,5 @@ export default authMiddleware({
 })
 
 export const config = {
-  matcher: ['/((?!.*\\..*|_next).*)', '/', '/(api|trpc)(.*)'],
+  matcher: ['/((?!.*\\..*|_next).*)', '/(api|trpc)(.*)'],
 }

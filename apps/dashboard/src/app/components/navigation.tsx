@@ -1,56 +1,58 @@
-import { SignedIn, UserButton, SignedOut, SignInButton } from "@clerk/nextjs";
-import Link from "next/link";
-import React from "react";
+import Link from 'next/link'
+import React from 'react'
+import { SignedIn, SignedOut, SignInButton, UserButton } from '@clerk/nextjs'
 
-interface MainNavigationProps {
-  noMenu?: boolean;
-  authNavigation?: React.ReactNode;
-}
+import {
+  type LinkItemsProps,
+  mainNavLinks,
+  settingsPageLinks,
+} from '@data/links'
 
-export const MainNavigation = ({
-  noMenu,
-  authNavigation,
-}: MainNavigationProps) => {
+const LinkItems = ({ links, pathname }: LinkItemsProps) => (
+  <>
+    {links.map((link) => {
+      const path = !pathname ? link.href : `${pathname}${link.href}`
+      return (
+        <li key={link.name}>
+          <Link href={path}>{link.name}</Link>
+        </li>
+      )
+    })}
+  </>
+)
+
+export const MainNavigation = () => {
   return (
     <nav>
-      <ul className="flex gap-3">
-        {!noMenu && (
-          // TODO: make this better
-          <>
-            <li>
-              <Link href={"/"}>Dashboard</Link>
-            </li>
-            <li>
-              <Link href={"/settings"}>Settings</Link>
-            </li>
-          </>
-        )}
-
-        {authNavigation && <li>{authNavigation}</li>}
+      <ul className="flex items-center gap-3 border border-red-500">
+        <LinkItems {...mainNavLinks} />
+        <li>
+          <SigninNavigation />
+        </li>
       </ul>
     </nav>
-  );
-};
+  )
+}
 
-export const SideNavigation = () => {
-  const uri = "/settings";
-
+export const SettingsPageNav = () => {
   return (
     <nav>
       <ul className="flex flex-col gap-3">
-        <li>
-          <Link href={`${uri}/`}>Personal</Link>
-        </li>
-        <li>
-          <Link href={`${uri}/`}>Company</Link>
-        </li>
-        <li>
-          <Link href={`${uri}/`}>Drivers</Link>
-        </li>
-        <li>
-          <Link href={`${uri}/`}>Drivers</Link>
-        </li>
+        <LinkItems {...settingsPageLinks} />
       </ul>
     </nav>
-  );
-};
+  )
+}
+
+const SigninNavigation = () => {
+  return (
+    <>
+      <SignedIn>
+        <UserButton />
+      </SignedIn>
+      <SignedOut>
+        <SignInButton />
+      </SignedOut>
+    </>
+  )
+}

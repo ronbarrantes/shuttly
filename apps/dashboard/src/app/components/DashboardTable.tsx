@@ -5,26 +5,23 @@ import { Button, Card } from 'ui'
 
 import { Table, createColumnHelper } from './react-table'
 
-import { InferredRide } from '../page'
 import dayjs from 'dayjs'
+import { AllRides } from '@actions/ride'
 
 interface DashboardTableProps {
-  rides: InferredRide[]
+  rides: AllRides[]
 }
 
 export const DashboardTable = ({ rides }: DashboardTableProps) => {
-  const columnHelper = createColumnHelper<InferredRide>()
+  const columnHelper = createColumnHelper<AllRides>()
 
   // What do I wanna display
-
   // passenger name
   // passenger address
   // time
   // ride type
   // ride status
   // has driver
-
-  console.log('RIDES', rides)
 
   const columns = [
     columnHelper.accessor('passenger.name', {

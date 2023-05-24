@@ -1,22 +1,19 @@
 'use client'
-import { SignedIn, SignedOut, SignInButton, UserButton } from '@clerk/nextjs'
 
-export const Header = () => {
+import Link from 'next/link'
+
+type HeaderProps = {
+  children?: React.ReactNode
+}
+
+export const Header = ({ children }: HeaderProps) => {
   'use client'
   return (
-    <header
-      className="flex justify-between p-5"
-      //style={{ display: 'flex', justifyContent: 'space-between', padding: 20 }}
-    >
-      <h1>My App</h1>
-      <SignedIn>
-        {/* Mount the UserButton component */}
-        <UserButton />
-      </SignedIn>
-      <SignedOut>
-        {/* Signed out users get sign in button */}
-        <SignInButton />
-      </SignedOut>
+    <header className="flex items-center justify-between border border-green-500 py-2">
+      <Link href="/">
+        <h1 className="text-2xl">Shuttly</h1>
+      </Link>
+      {children}
     </header>
   )
 }

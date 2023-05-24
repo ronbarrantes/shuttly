@@ -7,46 +7,6 @@ export interface DialogState {
   dialogContent?: React.ReactNode
 }
 
-type DialogAction =
-  | { type: 'OPEN_DIALOG'; payload: React.ReactNode }
-  | { type: 'CLOSE_DIALOG' }
-
-const dialogReducer = (state: DialogState, action: DialogAction) => {
-  switch (action.type) {
-    case 'OPEN_DIALOG':
-      return {
-        ...state,
-        isOpen: true,
-      }
-    case 'CLOSE_DIALOG':
-      return {
-        ...state,
-        isOpen: false,
-        dialogContent: undefined,
-      }
-    default:
-      throw new Error()
-  }
-}
-
-export const useDialogStore = () => {
-  const [state, dispatch] = React.useReducer<typeof dialogReducer>(
-    dialogReducer,
-    {
-      isOpen: false,
-      dialogContent: null,
-    }
-  )
-
-  return {
-    isOpen: state.isOpen,
-    dialogContent: state.dialogContent,
-    openDialog: (content: React.ReactNode) =>
-      dispatch({ type: 'OPEN_DIALOG', payload: content }),
-    closeDialog: () => dispatch({ type: 'CLOSE_DIALOG' }),
-  }
-}
-
 const DialogTitle = ({ children }: { children: React.ReactNode }) => (
   <DialogPrimitive.Title className="text-mauve12 m-0 text-[17px] font-medium">
     {children}
@@ -71,7 +31,7 @@ const DialogContent = ({
   return (
     <DialogPrimitive.Portal>
       <DialogPrimitive.Overlay className="bg-blackA8 data-[state=open]:animate-overlayShow fixed inset-0" />
-      <DialogPrimitive.Content className="data-[state=open]:animate-contentShow fixed left-[50%] top-[50%] max-h-[85vh] w-[90vw] max-w-[450px] translate-x-[-50%] translate-y-[-50%] rounded-[6px] bg-white p-[25px] shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none">
+      <DialogPrimitive.Content className="data-[state=open]:animate-contentShow fixed left-[50%] top-[50%] max-h-[85vh] w-[90vw] max-w-[450px] translate-x-[-50%] translate-y-[-50%] rounded-[6px] bg-white p-[25px] text-black shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none">
         <DialogTitle>{title}</DialogTitle>
         {description && <DialogDescription>{description}</DialogDescription>}
         {children}
