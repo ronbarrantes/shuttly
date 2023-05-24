@@ -1,4 +1,5 @@
 'use client'
+import { useTransition } from 'react'
 import { PlusIcon, MinusIcon } from '@radix-ui/react-icons'
 import classNames from 'classnames'
 import { type AddPassenger, type AddRide, ZodRideType } from '@actions/ride'
@@ -30,7 +31,7 @@ export const AddRideForm = ({
   // but eventually it will have a search feature that will look for
   // passengers that have already been added to the database
   // if they're not in the database it will just add them without much fuzz
-
+  const [pending, startTransition] = useTransition()
   const { count: rideCount, increment, remove } = useKeepCount()
 
   const hiCountBound = rideCount.length >= 4
@@ -40,16 +41,18 @@ export const AddRideForm = ({
     watch,
     register,
     control,
+    reset,
     handleSubmit,
     formState: { errors },
   } = useForm<ZodRideType>()
 
   const onSubmit = (data: ZodRideType) => {
-    const rides = rideCount.map((rideIdx) => data.rides[rideIdx])
-    data = { ...data, rides }
-
-    console.log('DATA ---->>>', data)
-    // addRide(data)
+    startTransition(async () => {
+      const rides = rideCount.map((rideIdx) => data.rides[rideIdx])
+      data = { ...data, companyId, rides }
+      await addRide(data)
+      reset()
+    })
   }
 
   return (
@@ -63,19 +66,19 @@ export const AddRideForm = ({
             onSubmit={handleSubmit(onSubmit)}
           >
             <input
-              {...register('name')}
+              {...register('name', { required: true })}
               placeholder="Name"
               className="rounded-lg border border-black"
             />
             <input
-              {...register('address')}
+              {...register('address', { required: true })}
               placeholder="Address"
               className="rounded-lg border border-black"
             />
             <input
               className="rounded-lg border border-black"
               placeholder="Phone Number*"
-              {...register('phone')}
+              {...register('phone', { required: true })}
             />
             <hr />{' '}
             {rideCount.map((rideIdx, idx) => {
@@ -103,6 +106,8 @@ export const AddRideForm = ({
                     type="datetime-local"
                     className="rounded-lg border border-black"
                     placeholder="Date"
+                    max={dayjs().add(2, 'month').format('YYYY-MM-DDThh:mm')}
+                    min={dayjs().format('YYYY-MM-DDThh:mm')}
                     {...register(`rides.${rideIdx}.scheduledTime`, {
                       required: true,
                     })}
@@ -147,7 +152,12 @@ export const AddRideForm = ({
                 <PlusIcon className="h-5 w-5" />
               </button>
             </div>
-            <input type="submit" />
+            <button
+              className="w-fit rounded-lg border border-blue-500 bg-blue-400 p-2 py-1"
+              type="submit"
+            >
+              {rideCount.length > 1 ? 'Add Rides' : 'Add Ride'}
+            </button>
           </form>
         </Dialog.Content>
       </Dialog>
