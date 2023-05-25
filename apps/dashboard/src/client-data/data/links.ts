@@ -21,23 +21,27 @@ export const mainNavLinks: LinkItemsProps = {
 
 // TODO: add links
 export const settingsPageLinks: LinkItemsProps = {
-  pathname: '/settings',
+  // pathname: '/settings',
   links: [
-    /**
-        <li>
-          <Link href={`${uri}/`}>Personal</Link>
-        </li>
-        <li>
-          <Link href={`${uri}/`}>Company</Link>
-        </li>
-        <li>
-          <Link href={`${uri}/`}>Drivers</Link>
-        </li>
-        <li>
-          <Link href={`${uri}/`}>Drivers</Link>
-        </li> 
- 
-
- */
+    {
+      name: 'Settings',
+      href: `/settings`,
+    },
+    {
+      name: 'Personal',
+      href: `/settings/personal`,
+    },
+    {
+      name: 'Company',
+      href: `/settings/company`,
+    },
+    {
+      name: 'Drivers',
+      href: `/settings/drivers`,
+    },
+    {
+      name: 'Vehicles',
+      href: `/settings/vehicles`,
+    },
   ],
 }
