@@ -3,6 +3,7 @@
 import { prisma } from 'db'
 import { z } from 'zod'
 import { revalidatePath } from 'next/cache'
+import { auth } from '@clerk/nextjs'
 
 export const addPassenger = async ({}) => {
   console.log('ADDING A PASSENGER')
@@ -36,6 +37,9 @@ const rideObj = z
   })
 
 export const addRide = async (rideInfo: ZodRideType) => {
+  const { userId } = auth()
+  if (!userId) throw new Error('Not logged in')
+
   // if (passengerId && passengerId.length) {
   //   const theRides = await prisma.ride.createMany({
   //     data: rides.map((ride) => {
@@ -69,12 +73,14 @@ export const addRide = async (rideInfo: ZodRideType) => {
     },
   })
 
-  return passenger
-
   revalidatePath('/')
+  return passenger
 }
 
 export const getAllRides = async () => {
+  const { userId } = auth()
+  if (!userId) throw new Error('Not logged in')
+
   const rides = await prisma.ride.findMany({
     include: {
       driver: true,
