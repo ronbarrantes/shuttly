@@ -6,7 +6,7 @@ import { type AddPassenger, type AddRide, ZodRideType } from '@actions/ride'
 import { Dialog } from '@components/Dialog'
 import dayjs from 'dayjs'
 import { useForm } from 'react-hook-form'
-import { useKeepCount } from '../hooks'
+import { useKeepCount } from '@hooks'
 
 type AddRideFormProps = {
   addPassenger: AddPassenger
