@@ -1,11 +1,11 @@
-import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
+import { StatusBar } from 'expo-status-bar'
+import { StyleSheet, Text, View } from 'react-native'
 // import { RnButton } from "ui";
 
 export default function Native() {
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>Native</Text>
+      <Text style={styles.header}>Shuttly</Text>
       {/* <RnButton
         onClick={() => {
           console.log("Pressed!");
@@ -15,19 +15,19 @@ export default function Native() {
       /> */}
       <StatusBar style="auto" />
     </View>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   header: {
-    fontWeight: "bold",
+    fontWeight: 'bold',
     marginBottom: 20,
     fontSize: 36,
   },
-});
+})
