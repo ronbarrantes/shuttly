@@ -23,6 +23,7 @@
       "cache": false
     },
     "ui": {
+      "dependsOn": ["^build"],
       "cache": false,
       "persistent": true
     },
