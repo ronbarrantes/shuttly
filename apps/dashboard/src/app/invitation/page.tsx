@@ -1,12 +1,15 @@
 import { InvitationCard } from './InvitationCard'
 import { currentUser } from '@clerk/nextjs'
-import { getInvitation, acceptInvitation } from '@actions/invitation'
+import { acceptInvitation } from '@actions/invitation'
+import { prisma } from 'db'
 
 export default async function Invitation() {
   const user = await currentUser()
   const userEmail = user?.emailAddresses[0].emailAddress
 
-  const invitation = await getInvitation()
+  const invitation = await prisma.invitation.findFirst({
+    where: { email: userEmail },
+  })
 
   if (!invitation)
     return (

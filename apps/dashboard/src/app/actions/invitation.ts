@@ -3,17 +3,6 @@
 import { prisma } from 'db'
 import { clerkClient } from '@clerk/nextjs'
 
-export const getInvitation = async (email?: string) => {
-  'use server'
-
-  const invitation = await prisma.invitation.findFirst({
-    where: {
-      email,
-    },
-  })
-  return invitation
-}
-
 export const acceptInvitation = async ({
   userId,
   companyId,
@@ -23,8 +12,6 @@ export const acceptInvitation = async ({
   companyId: string
   invitationId: string
 }) => {
-  'use server'
-
   const createAccount = () =>
     prisma.account.create({
       data: {
