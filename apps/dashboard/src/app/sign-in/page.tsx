@@ -19,7 +19,7 @@ const SignInPage = () => {
               href="https://clerk.com/"
               target="_blank"
               rel="noopener"
-              className="text-blue-500 underline hover:text-black hover:no-underline"
+              className="text-sm font-light text-indigo-500 underline hover:text-black hover:no-underline"
             >
               Clerk.com
             </a>

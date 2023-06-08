@@ -148,7 +148,7 @@ export const AddRideForm = ({
               </button>
             </div>
             <button
-              className="w-fit rounded-lg border border-blue-500 bg-blue-400 p-2 py-1"
+              className="w-fit rounded-lg border border-indigo-500 bg-indigo-400 p-2 py-1"
               type="submit"
             >
               {rideCount.length > 1 ? 'Add Rides' : 'Add Ride'}

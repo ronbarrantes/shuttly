@@ -7,5 +7,5 @@ body {
 }
 
 .btn-primary {
-  @apply w-fit rounded-md border-2 border-indigo-500 bg-indigo-300 p-3 py-1 hover:border-slate-800 hover:bg-slate-800 hover:text-white;
+  @apply w-fit rounded-md bg-indigo-300 p-3 py-1 hover:bg-slate-800 hover:text-white;
 }

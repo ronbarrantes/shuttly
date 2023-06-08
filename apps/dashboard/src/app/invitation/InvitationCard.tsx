@@ -31,7 +31,7 @@ export const InvitationCard = ({
         <button
           disabled={pending}
           // type="button"
-          className="rounded bg-blue-600 px-4 py-2 font-bold text-white disabled:bg-gray-500"
+          className="rounded bg-indigo-600 px-4 py-2 font-bold text-white disabled:bg-gray-500"
           onClick={handleAcceptInvitation}
         >
           Accept Invitation
