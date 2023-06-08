@@ -10,7 +10,7 @@ export const Footer = () => {
           <li>Tools used:</li>
           <li>
             <a
-              href="http://nextjs.org"
+              href="https://nextjs.org"
               target="_blank"
               rel="noopener noreferrer"
               className="link-primary"
@@ -20,7 +20,7 @@ export const Footer = () => {
           </li>
           <li>
             <a
-              href="http://turbo.build"
+              href="https://turbo.build"
               target="_blank"
               rel="noopener noreferrer"
               className="link-primary"
@@ -30,7 +30,7 @@ export const Footer = () => {
           </li>
           <li>
             <a
-              href="http://tailwind.css"
+              href="https://tailwindcss.com"
               target="_blank"
               rel="noopener noreferrer"
               className="link-primary"
@@ -40,7 +40,7 @@ export const Footer = () => {
           </li>
           <li>
             <a
-              href="http://planetscale.com"
+              href="https://planetscale.com"
               target="_blank"
               rel="noopener noreferrer"
               className="link-primary"
@@ -50,7 +50,7 @@ export const Footer = () => {
           </li>
           <li>
             <a
-              href="http://clerk.com"
+              href="https://clerk.com"
               target="_blank"
               rel="noopener noreferrer"
               className="link-primary"
@@ -67,7 +67,7 @@ export const Footer = () => {
           </span>{' '}
           by{' '}
           <a
-            href="http://ronb.co"
+            href="https://ronb.co"
             target="_blank"
             rel="noopener"
             className="text-indigo-500 underline hover:text-black hover:no-underline"
