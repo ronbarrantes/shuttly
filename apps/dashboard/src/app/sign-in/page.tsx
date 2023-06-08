@@ -12,14 +12,14 @@ const SignInPage = () => {
           <p className="text-center text-xl font-semibold">
             To continue with the platform please sign in
           </p>
-          <p className="text-sm text-slate-500">
+          <p className="text-sm font-light text-slate-500">
             If you don&apos;t already have an account, one will be created for
             you automatically. Rest assured, your account will be managed by{' '}
             <a
               href="https://clerk.com/"
               target="_blank"
               rel="noopener"
-              className="text-sm font-light text-indigo-500 underline hover:text-black hover:no-underline"
+              className="link-primary text-sm"
             >
               Clerk.com
             </a>

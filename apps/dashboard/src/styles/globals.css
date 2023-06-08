@@ -9,3 +9,7 @@ body {
 .btn-primary {
   @apply w-fit rounded-md border border-indigo-400 bg-indigo-300 p-3 py-1 text-indigo-900 hover:border-slate-800 hover:bg-slate-800 hover:text-white;
 }
+
+.link-primary {
+  @apply text-indigo-500 underline hover:text-black hover:no-underline;
+}
