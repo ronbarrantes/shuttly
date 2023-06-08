@@ -6,18 +6,23 @@ import { MainNavigation } from './navigation'
 import classNames from 'classnames'
 
 export const PageLayout = (
-  props: PropsWithChildren & { title: string; noMenu?: boolean }
+  props: PropsWithChildren & {
+    title: string
+    noMenu?: boolean
+    className?: string
+  }
 ) => {
   return (
     <div
       className={classNames(
-        'flex h-screen w-screen flex-col border border-red-500 p-2 py-2'
+        'flex h-screen w-screen flex-col p-2 py-2',
+        props.className
       )}
     >
       <Header>{!props.noMenu && <MainNavigation />}</Header>
-      <main className="flex grow flex-col overflow-hidden border border-green-500 ">
+      <main className="flex grow flex-col overflow-hidden">
         <h1 className="text-xl font-semibold">{props.title}</h1>
-        <div className="flex grow flex-col overflow-y-scroll border border-blue-500">
+        <div className="flex grow flex-col overflow-y-scroll">
           {props.children}
         </div>
       </main>
