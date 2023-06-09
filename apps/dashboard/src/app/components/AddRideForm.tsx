@@ -62,7 +62,7 @@ export const AddRideForm = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={() => setIsOpen(!isOpen)}>
-      <Dialog.Trigger className="btn-primary">Add a Ride</Dialog.Trigger>
+      <Dialog.Trigger className="btn btn-primary">Add a Ride</Dialog.Trigger>
       <Dialog.Content title="Add a ride">
         <form className="flex flex-col gap-4" onSubmit={handleSubmit(onSubmit)}>
           <input

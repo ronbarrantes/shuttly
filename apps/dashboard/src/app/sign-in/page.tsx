@@ -26,7 +26,7 @@ const SignInPage = () => {
             , using Google OAuth to ensure the security of your information.
           </p>
           <SignInButton mode="modal">
-            <button className="btn-primary">Sign In</button>
+            <button className="btn btn-primary">Sign In</button>
           </SignInButton>
         </div>
       </div>
