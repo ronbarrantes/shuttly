@@ -6,8 +6,12 @@ body {
   @apply bg-slate-50 text-slate-800;
 }
 
+.btn {
+  @apply w-fit rounded-md p-3 py-1 font-bold disabled:bg-gray-500;
+}
+
 .btn-primary {
-  @apply w-fit rounded-md bg-indigo-600 p-3 py-1 font-bold text-indigo-100 hover:bg-slate-800 hover:text-white disabled:bg-gray-500;
+  @apply !bg-indigo-600 text-indigo-100 hover:bg-slate-800 hover:text-white;
 }
 
 .link-primary {
