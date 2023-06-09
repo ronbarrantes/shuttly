@@ -9,7 +9,7 @@ export interface DialogState {
 }
 
 const DialogTitle = ({ children }: { children: React.ReactNode }) => (
-  <DialogPrimitive.Title className="text-mauve12 m-0 text-[17px] font-medium">
+  <DialogPrimitive.Title className="text-mauve12 m-0 mb-2 text-xl font-semibold">
     {children}
   </DialogPrimitive.Title>
 )
@@ -24,15 +24,22 @@ const DialogContent = ({
   title,
   description,
   children,
+  className,
 }: {
   title: string
   description?: string
+  className?: string
   children: React.ReactNode
 }) => {
   return (
     <DialogPrimitive.Portal>
-      <DialogPrimitive.Overlay className="bg-blackA8 data-[state=open]:animate-overlayShow fixed inset-0" />
-      <DialogPrimitive.Content className="data-[state=open]:animate-contentShow fixed left-[50%] top-[50%] max-h-[85vh] w-[90vw] max-w-[450px] translate-x-[-50%] translate-y-[-50%] rounded-[6px] bg-white p-[25px] text-black shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none">
+      <DialogPrimitive.Overlay className="data-[state=open]:animate-overlayShow fixed inset-0 backdrop-blur-sm" />
+      <DialogPrimitive.Content
+        className={classNames(
+          'data-[state=open]:animate-contentShow fixed left-[50%] top-[50%] max-h-[85vh] w-[90vw] max-w-[450px] translate-x-[-50%] translate-y-[-50%] rounded-[6px] border border-slate-200 bg-white p-[25px] text-black shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none',
+          className
+        )}
+      >
         <DialogTitle>{title}</DialogTitle>
         {description && <DialogDescription>{description}</DialogDescription>}
         {children}
