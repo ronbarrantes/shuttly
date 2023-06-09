@@ -63,6 +63,7 @@ const DialogTrigger = ({
   return (
     <DialogPrimitive.Trigger asChild>
       <button
+        type="button"
         className={classNames(
           'inline-flex w-fit items-center justify-center font-medium leading-none focus:shadow-none  focus:outline-none',
           className
