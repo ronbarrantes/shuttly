@@ -23,6 +23,7 @@
       "cache": false
     },
     "ui": {
+      "dependsOn": ["^build"],
       "cache": false,
       "persistent": true
     },
@@ -39,6 +40,7 @@
     "NODE_ENV",
     "SKIP_ENV_VALIDATION",
     "VERCEL",
-    "VERCEL_URL"
+    "VERCEL_URL",
+    "TEST_COMPANY_ID"
   ]
 }

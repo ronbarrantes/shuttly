@@ -1,7 +1,12 @@
-import { InvitationCard } from './InvitationCard'
+import {
+  InvitationCard,
+  TestAccountCard,
+} from '@components/invitation/InvitationCards'
 import { currentUser } from '@clerk/nextjs'
-import { acceptInvitation } from '@actions/invitation'
+
 import { prisma } from 'db'
+import { PageLayout } from '@components/page-layout'
+import { MessageBox } from '../components/invitation/MessageBox'
 
 export default async function Invitation() {
   const user = await currentUser()
@@ -11,26 +16,31 @@ export default async function Invitation() {
     where: { email: userEmail },
   })
 
-  if (!invitation)
+  if (!invitation) {
     return (
-      <div>
-        <p>Welcome</p>
-        <p>No invitation found</p>
-      </div>
+      <PageLayout title="" noMenu>
+        <MessageBox title="Welcome">
+          <TestAccountCard
+            userInfo={{
+              userId: user!.id,
+            }}
+          />
+        </MessageBox>
+      </PageLayout>
     )
+  }
 
   return (
-    <div>
-      <p>Welcome</p>
-      <p>{userEmail}</p>
-      <InvitationCard
-        userInfo={{
-          userId: user!.id,
-          companyId: invitation.companyId,
-          invitationId: invitation.id,
-        }}
-        acceptInvitation={acceptInvitation}
-      />
-    </div>
+    <PageLayout title="" noMenu>
+      <MessageBox title="Welcome">
+        <InvitationCard
+          userInfo={{
+            userId: user!.id,
+            companyId: invitation.companyId,
+            invitationId: invitation.id,
+          }}
+        />
+      </MessageBox>
+    </PageLayout>
   )
 }

@@ -3,7 +3,8 @@
 import { prisma } from 'db'
 import { z } from 'zod'
 import { revalidatePath } from 'next/cache'
-import { auth } from '@clerk/nextjs'
+import { auth, currentUser } from '@clerk/nextjs'
+import { ratelimit } from '@/client-data/utils/rate-limiter'
 
 export const addPassenger = async ({}) => {
   console.log('ADDING A PASSENGER')
@@ -38,21 +39,16 @@ const rideObj = z
 
 export const addRide = async (rideInfo: ZodRideType) => {
   const { userId } = auth()
+  const user = await currentUser()
+
+  const testAccount = user?.privateMetadata?.testAccount
+
   if (!userId) throw new Error('Not logged in')
 
-  // if (passengerId && passengerId.length) {
-  //   const theRides = await prisma.ride.createMany({
-  //     data: rides.map((ride) => {
-  //       return {
-  //         ...ride,
-  //         companyId,
-  //         passengerId,
-  //       }
-  //     }),
-  //   })
-
-  //   return theRides
-  // }
+  if (testAccount) {
+    const { success: allowed } = await ratelimit.limit(userId)
+    if (!allowed) throw new Error('Number of rides in test account exceeded')
+  }
 
   const passenger = await prisma.passenger.create({
     data: {
