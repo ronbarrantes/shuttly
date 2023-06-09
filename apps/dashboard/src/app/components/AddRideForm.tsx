@@ -1,5 +1,5 @@
 'use client'
-import { useTransition } from 'react'
+import { useState, useTransition } from 'react'
 import { PlusIcon, MinusIcon } from '@radix-ui/react-icons'
 import classNames from 'classnames'
 import { type AddPassenger, type AddRide, ZodRideType } from '@actions/ride'
@@ -21,6 +21,7 @@ export const AddRideForm = ({
   companyId,
 }: AddRideFormProps) => {
   const [pending, startTransition] = useTransition()
+  const [isOpen, setIsOpen] = useState(false)
   const {
     count: rideCount,
     increment,
@@ -55,14 +56,15 @@ export const AddRideForm = ({
 
       reset()
       resetCount()
+      setIsOpen(false)
     })
   }
 
   return (
     <div>
       <p>Add Ride Form</p>
-      <Dialog>
-        <Dialog.Trigger>Open Dialog</Dialog.Trigger>
+      <Dialog open={isOpen} onOpenChange={() => setIsOpen(!isOpen)}>
+        <Dialog.Trigger>Add a Ride</Dialog.Trigger>
         <Dialog.Content title="Add a ride">
           <form
             className="flex flex-col gap-4"
