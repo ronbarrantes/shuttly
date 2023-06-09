@@ -48,8 +48,8 @@ export const AddRideForm = ({
         await addRide(data)
       } catch (err: unknown) {
         if (err instanceof Error) {
-          toast.error(`ERROR ${err.message}`, {
-            position: 'bottom-center',
+          toast.error(err.message, {
+            position: 'top-center',
           })
         }
       }
