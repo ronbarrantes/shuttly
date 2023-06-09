@@ -23,14 +23,14 @@ export function Table<TData>({ data, columns }: TableProps<TData>) {
 
   return (
     <table>
-      <thead className="border border-green-300">
+      <thead className="border-y border-slate-300">
         {table.getHeaderGroups().map((headerGroup) => (
           <tr key={headerGroup.id}>
             {headerGroup.headers.map((header) => (
               <th
                 key={header.id}
                 colSpan={header.colSpan}
-                className="border border-red-500"
+                className="border-x border-slate-300"
               >
                 {header.isPlaceholder
                   ? null
@@ -45,7 +45,10 @@ export function Table<TData>({ data, columns }: TableProps<TData>) {
       </thead>
       <tbody>
         {table.getRowModel().rows.map((row) => (
-          <tr key={row.id}>
+          <tr
+            key={row.id}
+            className="cursor-pointer even:bg-slate-200 hover:bg-indigo-200"
+          >
             {row.getVisibleCells().map((cell) => (
               <td key={cell.id}>
                 {flexRender(cell.column.columnDef.cell, cell.getContext())}
