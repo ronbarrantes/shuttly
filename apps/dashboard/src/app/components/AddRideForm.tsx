@@ -7,6 +7,7 @@ import { Dialog } from '@components/Dialog'
 import dayjs from 'dayjs'
 import { useForm } from 'react-hook-form'
 import { useKeepCount } from '@hooks'
+import toast from 'react-hot-toast'
 
 type AddRideFormProps = {
   addPassenger: AddPassenger
@@ -42,7 +43,16 @@ export const AddRideForm = ({
     startTransition(async () => {
       const rides = rideCount.map((rideIdx) => data.rides[rideIdx])
       data = { ...data, companyId, rides }
-      await addRide(data)
+      try {
+        await addRide(data)
+      } catch (err: unknown) {
+        if (err instanceof Error) {
+          toast.error(`ERROR ${err.message}`, {
+            position: 'bottom-center',
+          })
+        }
+      }
+
       reset()
       resetCount()
     })
