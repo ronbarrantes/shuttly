@@ -9,18 +9,13 @@ import {
 
 type InvitationCardProps = {
   userInfo: Parameters<AcceptInvitation>[0]
-  // acceptInvitation: AcceptInvitation
 }
 
 type TestAccountCardProps = {
   userInfo: Parameters<AcceptTestInvitation>[0]
-  // acceptTestInvitation: AcceptTestInvitation
 }
 
-export const InvitationCard = ({
-  // acceptInvitation,
-  userInfo,
-}: InvitationCardProps) => {
+export const InvitationCard = ({ userInfo }: InvitationCardProps) => {
   const [pending, startTransition] = useTransition()
 
   const handleAcceptInvitation = () => {
@@ -40,7 +35,6 @@ export const InvitationCard = ({
         <p>Click the button to accept invitation</p>
         <button
           disabled={pending}
-          // type="button"
           className="rounded bg-indigo-600 px-4 py-2 font-bold text-white disabled:bg-gray-500"
           onClick={handleAcceptInvitation}
         >
@@ -51,10 +45,7 @@ export const InvitationCard = ({
   )
 }
 
-export const TestAccountCard = ({
-  // acceptTestInvitation,
-  userInfo,
-}: TestAccountCardProps) => {
+export const TestAccountCard = ({ userInfo }: TestAccountCardProps) => {
   const [pending, startTransition] = useTransition()
 
   const handleAcceptTestInvitation = () => {
@@ -64,19 +55,19 @@ export const TestAccountCard = ({
   }
 
   return (
-    <div>
-      <p>Invitation</p>
-      <div>
-        <p>Click the button to accept invitation</p>
-        <button
-          disabled={pending}
-          // type="button"
-          className="rounded bg-indigo-600 px-4 py-2 font-bold text-white disabled:bg-gray-500"
-          onClick={handleAcceptTestInvitation}
-        >
-          Accept Invitation
-        </button>
-      </div>
-    </div>
+    <>
+      <p className="text-slate-600">
+        If you want to create a test account to look at the platform just click
+        the button below
+      </p>
+
+      <button
+        disabled={pending}
+        className="btn-primary"
+        onClick={handleAcceptTestInvitation}
+      >
+        Accept Test Invitation
+      </button>
+    </>
   )
 }
