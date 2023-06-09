@@ -29,19 +29,17 @@ export const InvitationCard = ({ userInfo }: InvitationCardProps) => {
   }
 
   return (
-    <div>
-      <p>Invitation</p>
-      <div>
-        <p>Click the button to accept invitation</p>
-        <button
-          disabled={pending}
-          className="rounded bg-indigo-600 px-4 py-2 font-bold text-white disabled:bg-gray-500"
-          onClick={handleAcceptInvitation}
-        >
-          Accept Invitation
-        </button>
-      </div>
-    </div>
+    <>
+      <p>Looks like your invitation has been approved.</p>
+      <p>Please click the button to accept the invitation.</p>
+      <button
+        disabled={pending}
+        className="btn-primary"
+        onClick={handleAcceptInvitation}
+      >
+        Accept Invitation
+      </button>
+    </>
   )
 }
 
@@ -56,11 +54,13 @@ export const TestAccountCard = ({ userInfo }: TestAccountCardProps) => {
 
   return (
     <>
+      <p>
+        {`It looks like you don't have an invitation yet. Please contact your company's admin to get one.`}
+      </p>
       <p className="text-slate-500">
         If you want to create a test account to look at the platform just click
         the button below
       </p>
-
       <button
         disabled={pending}
         className="btn-primary"

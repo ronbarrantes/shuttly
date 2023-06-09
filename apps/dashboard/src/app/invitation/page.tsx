@@ -20,10 +20,6 @@ export default async function Invitation() {
     return (
       <PageLayout title="" noMenu>
         <MessageBox title="Welcome">
-          <p>
-            {`It looks like you don't have an invitation yet. Please contact your company's admin to get one.`}
-          </p>
-
           <TestAccountCard
             userInfo={{
               userId: user!.id,
@@ -35,15 +31,16 @@ export default async function Invitation() {
   }
 
   return (
-    <PageLayout title="Welcome" noMenu>
-      <p>{userEmail}</p>
-      <InvitationCard
-        userInfo={{
-          userId: user!.id,
-          companyId: invitation.companyId,
-          invitationId: invitation.id,
-        }}
-      />
+    <PageLayout title="" noMenu>
+      <MessageBox title="Welcome">
+        <InvitationCard
+          userInfo={{
+            userId: user!.id,
+            companyId: invitation.companyId,
+            invitationId: invitation.id,
+          }}
+        />
+      </MessageBox>
     </PageLayout>
   )
 }
