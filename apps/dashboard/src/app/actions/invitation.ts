@@ -59,51 +59,50 @@ export const acceptInvitation = async ({
   }
 }
 
-export const acceptTestInvitation = async ({ userId }: { userId: string }) => {
-  console.log(
-    'acceptTestInvitation',
-    console.log('DB', process.env.DATABASE_URL)
-  )
+export const createTestAccount = async ({ userId }: { userId: string }) => {
+  const testCompanyId = process.env.TEST_COMPANY_ID
 
-  // const createAccount = () =>
-  //   prisma.account.create({
-  //     data: {
-  //       userId: userId,
-  //       company: {
-  //         connect: {
-  //           id: companyId,
-  //         },
-  //       },
-  //     },
+  console.log('testCompanyId', testCompanyId)
 
-  //     include: {
-  //       company: true,
-  //     },
-  //   })
+  const createAccount = () =>
+    prisma.account.create({
+      data: {
+        userId: userId,
+        company: {
+          connect: {
+            id: testCompanyId,
+          },
+        },
+      },
 
-  // try {
-  //   const [account] = await prisma.$transaction([
-  //     createAccount(),
-  //     // deleteInvitation(),
-  //   ])
+      include: {
+        company: true,
+      },
+    })
 
-  //   await clerkClient.users.updateUserMetadata(userId, {
-  //     publicMetadata: {
-  //       companyName: account.company.name,
-  //       accountId: account.id,
-  //     },
-  //     privateMetadata: {
-  //       companyId: account.companyId,
-  //     },
-  //   })
-  // } catch (error) {
-  //   throw new Error('Something went wrong')
-  // } finally {
-  //   // revalidatePath('/invitation')
-  //   // TODO: add a redirect to '/'
-  //   // https://github.com/ronbarrantes/shuttly/issues/38
-  // }
+  try {
+    const [account] = await prisma.$transaction([
+      createAccount(),
+      // deleteInvitation(),
+    ])
+
+    await clerkClient.users.updateUserMetadata(userId, {
+      publicMetadata: {
+        companyName: account.company.name,
+        accountId: account.id,
+      },
+      privateMetadata: {
+        companyId: account.companyId,
+      },
+    })
+  } catch (error) {
+    throw new Error('Something went wrong')
+  } finally {
+    // revalidatePath('/invitation')
+    // TODO: add a redirect to '/'
+    // https://github.com/ronbarrantes/shuttly/issues/38
+  }
 }
 
 export type AcceptInvitation = typeof acceptInvitation
-export type AcceptTestInvitation = typeof acceptTestInvitation
+export type CreateTestAccount = typeof createTestAccount

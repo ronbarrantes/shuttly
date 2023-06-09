@@ -2,9 +2,9 @@
 import { useTransition } from 'react'
 import {
   type AcceptInvitation,
-  type AcceptTestInvitation,
+  type CreateTestAccount,
   acceptInvitation,
-  acceptTestInvitation,
+  createTestAccount,
 } from '@actions/invitation'
 
 type InvitationCardProps = {
@@ -12,7 +12,7 @@ type InvitationCardProps = {
 }
 
 type TestAccountCardProps = {
-  userInfo: Parameters<AcceptTestInvitation>[0]
+  userInfo: Parameters<CreateTestAccount>[0]
 }
 
 export const InvitationCard = ({ userInfo }: InvitationCardProps) => {
@@ -48,15 +48,15 @@ export const InvitationCard = ({ userInfo }: InvitationCardProps) => {
 export const TestAccountCard = ({ userInfo }: TestAccountCardProps) => {
   const [pending, startTransition] = useTransition()
 
-  const handleAcceptTestInvitation = () => {
+  const handleCreateTestAccount = () => {
     startTransition(async () => {
-      await acceptTestInvitation({ userId: userInfo.userId })
+      await createTestAccount({ userId: userInfo.userId })
     })
   }
 
   return (
     <>
-      <p className="text-slate-600">
+      <p className="text-slate-500">
         If you want to create a test account to look at the platform just click
         the button below
       </p>
@@ -64,9 +64,9 @@ export const TestAccountCard = ({ userInfo }: TestAccountCardProps) => {
       <button
         disabled={pending}
         className="btn-primary"
-        onClick={handleAcceptTestInvitation}
+        onClick={handleCreateTestAccount}
       >
-        Accept Test Invitation
+        Create Test Account
       </button>
     </>
   )
