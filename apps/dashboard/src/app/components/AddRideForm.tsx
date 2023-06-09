@@ -1,12 +1,13 @@
 'use client'
-import { useTransition } from 'react'
+import { useState, useTransition } from 'react'
 import { PlusIcon, MinusIcon } from '@radix-ui/react-icons'
 import classNames from 'classnames'
 import { type AddPassenger, type AddRide, ZodRideType } from '@actions/ride'
 import { Dialog } from '@components/Dialog'
 import dayjs from 'dayjs'
 import { useForm } from 'react-hook-form'
-import { useKeepCount } from '../hooks'
+import { useKeepCount } from '@hooks'
+import toast from 'react-hot-toast'
 
 type AddRideFormProps = {
   addPassenger: AddPassenger
@@ -20,6 +21,7 @@ export const AddRideForm = ({
   companyId,
 }: AddRideFormProps) => {
   const [pending, startTransition] = useTransition()
+  const [isOpen, setIsOpen] = useState(false)
   const {
     count: rideCount,
     increment,
@@ -42,17 +44,27 @@ export const AddRideForm = ({
     startTransition(async () => {
       const rides = rideCount.map((rideIdx) => data.rides[rideIdx])
       data = { ...data, companyId, rides }
-      await addRide(data)
+      try {
+        await addRide(data)
+      } catch (err: unknown) {
+        if (err instanceof Error) {
+          toast.error(err.message, {
+            position: 'top-center',
+          })
+        }
+      }
+
       reset()
       resetCount()
+      setIsOpen(false)
     })
   }
 
   return (
     <div>
       <p>Add Ride Form</p>
-      <Dialog>
-        <Dialog.Trigger>Open Dialog</Dialog.Trigger>
+      <Dialog open={isOpen} onOpenChange={() => setIsOpen(!isOpen)}>
+        <Dialog.Trigger>Add a Ride</Dialog.Trigger>
         <Dialog.Content title="Add a ride">
           <form
             className="flex flex-col gap-4"
@@ -148,7 +160,7 @@ export const AddRideForm = ({
               </button>
             </div>
             <button
-              className="w-fit rounded-lg border border-blue-500 bg-blue-400 p-2 py-1"
+              className="w-fit rounded-lg border border-indigo-500 bg-indigo-400 p-2 py-1"
               type="submit"
             >
               {rideCount.length > 1 ? 'Add Rides' : 'Add Ride'}

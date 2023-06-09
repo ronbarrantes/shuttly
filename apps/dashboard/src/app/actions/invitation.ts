@@ -59,4 +59,51 @@ export const acceptInvitation = async ({
   }
 }
 
+export const createTestAccount = async ({ userId }: { userId: string }) => {
+  const testCompanyId = process.env.TEST_COMPANY_ID
+
+  console.log('testCompanyId', testCompanyId)
+
+  const createAccount = () =>
+    prisma.account.create({
+      data: {
+        userId: userId,
+        company: {
+          connect: {
+            id: testCompanyId,
+          },
+        },
+      },
+
+      include: {
+        company: true,
+      },
+    })
+
+  try {
+    const [account] = await prisma.$transaction([
+      createAccount(),
+      // deleteInvitation(),
+    ])
+
+    await clerkClient.users.updateUserMetadata(userId, {
+      publicMetadata: {
+        companyName: account.company.name,
+        accountId: account.id,
+      },
+      privateMetadata: {
+        companyId: account.companyId,
+        testAccount: true,
+      },
+    })
+  } catch (error) {
+    throw new Error('Something went wrong')
+  } finally {
+    // revalidatePath('/invitation')
+    // TODO: add a redirect to '/'
+    // https://github.com/ronbarrantes/shuttly/issues/38
+  }
+}
+
 export type AcceptInvitation = typeof acceptInvitation
+export type CreateTestAccount = typeof createTestAccount
