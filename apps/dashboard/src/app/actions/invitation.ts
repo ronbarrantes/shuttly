@@ -93,6 +93,7 @@ export const createTestAccount = async ({ userId }: { userId: string }) => {
       },
       privateMetadata: {
         companyId: account.companyId,
+        testAccount: true,
       },
     })
   } catch (error) {
