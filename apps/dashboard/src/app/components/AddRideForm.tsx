@@ -137,7 +137,7 @@ export const AddRideForm = ({
                       type="radio"
                       value="dropoff"
                       id="field-dropoff"
-                      className="mr-2 border border-red-500"
+                      className="mr-2"
                     />
                     Dropoff
                   </label>
@@ -165,7 +165,7 @@ export const AddRideForm = ({
               <PlusIcon className="h-4 w-4" />
             </button>
           </div>
-          <button className="btn btn-primary" type="submit">
+          <button className="btn btn-primary" type="submit" disabled={pending}>
             {rideCount.length > 1 ? 'Add Rides' : 'Add Ride'}
           </button>
         </form>
