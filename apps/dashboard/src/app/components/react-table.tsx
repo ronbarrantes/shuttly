@@ -47,7 +47,7 @@ export function Table<TData>({ data, columns }: TableProps<TData>) {
         {table.getRowModel().rows.map((row) => (
           <tr
             key={row.id}
-            className="cursor-pointer even:bg-slate-200 hover:bg-indigo-200"
+            className="cursor-pointer border border-t-0 border-slate-300 even:bg-slate-100 hover:bg-indigo-100"
           >
             {row.getVisibleCells().map((cell) => (
               <td key={cell.id}>

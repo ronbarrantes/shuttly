@@ -64,73 +64,84 @@ export const AddRideForm = ({
     <Dialog open={isOpen} onOpenChange={() => setIsOpen(!isOpen)}>
       <Dialog.Trigger className="btn btn-primary">Add a Ride</Dialog.Trigger>
       <Dialog.Content title="Add a ride">
-        <form className="flex flex-col gap-4" onSubmit={handleSubmit(onSubmit)}>
+        <form className="flex flex-col gap-2" onSubmit={handleSubmit(onSubmit)}>
           <input
             {...register('name', { required: true })}
             placeholder="Name"
-            className="rounded-lg border border-black"
+            className={classNames(
+              'rounded-md border border-slate-500 px-2 py-1'
+            )}
           />
           <input
             {...register('address', { required: true })}
             placeholder="Address"
-            className="rounded-lg border border-black"
+            className="rounded-md border border-slate-500 px-2 py-1"
           />
           <input
-            className="rounded-lg border border-black"
-            placeholder="Phone Number*"
+            className="rounded-md border border-slate-500 px-2 py-1"
+            placeholder="Phone Number"
             {...register('phone', { required: true })}
           />
           <hr />{' '}
           {rideCount.map((rideIdx, idx) => {
             return (
-              <div key={`${rideIdx}-${idx}`}>
-                <label htmlFor="field-pickup">
+              <div
+                key={`${rideIdx}-${idx}`}
+                className="flex flex-col gap-3 border-b border-slate-200 py-3"
+              >
+                <div className="relative flex items-center justify-between">
                   <input
-                    {...register(`rides.${rideIdx}.rideType`)}
-                    type="radio"
-                    value="pickup"
-                    id="field-pickup"
-                    defaultChecked
+                    type="datetime-local"
+                    className="h-fit w-fit rounded-md border border-slate-500 px-2 py-1"
+                    placeholder="Date"
+                    max={dayjs().add(2, 'month').format('YYYY-MM-DDThh:mm')}
+                    min={dayjs().format('YYYY-MM-DDThh:mm')}
+                    {...register(`rides.${rideIdx}.scheduledTime`, {
+                      required: true,
+                    })}
                   />
-                  Pickup
-                </label>
-                <label htmlFor="field-dropoff">
-                  <input
-                    {...register(`rides.${rideIdx}.rideType`)}
-                    type="radio"
-                    value="dropoff"
-                    id="field-dropoff"
-                  />
-                  Dropoff
-                </label>
 
-                <input
-                  type="datetime-local"
-                  className="rounded-lg border border-black"
-                  placeholder="Date"
-                  max={dayjs().add(2, 'month').format('YYYY-MM-DDThh:mm')}
-                  min={dayjs().format('YYYY-MM-DDThh:mm')}
-                  {...register(`rides.${rideIdx}.scheduledTime`, {
-                    required: true,
-                  })}
-                />
+                  <button
+                    type="button"
+                    aria-label="Remove ride"
+                    className={classNames(
+                      'btn-secondary absolute right-1 top-0 h-fit w-fit rounded-full p-1'
+                      // loCountBound && 'opacity-50'
+                    )}
+                    onClick={() => {
+                      if (!loCountBound) {
+                        remove(rideIdx)
+                      }
+                    }}
+                    disabled={loCountBound}
+                  >
+                    <MinusIcon className="h-4 w-4" />
+                  </button>
+                </div>
 
-                <button
-                  type="button"
-                  aria-label="Remove ride"
-                  className={classNames(
-                    'rounded-lg border border-black',
-                    loCountBound && 'opacity-50'
-                  )}
-                  onClick={() => {
-                    if (!loCountBound) {
-                      remove(rideIdx)
-                    }
-                  }}
-                  disabled={loCountBound}
-                >
-                  <MinusIcon className="h-6 w-6" />
-                </button>
+                <div className="flex gap-3">
+                  <label htmlFor="field-pickup">
+                    <input
+                      {...register(`rides.${rideIdx}.rideType`)}
+                      type="radio"
+                      value="pickup"
+                      id="field-pickup"
+                      defaultChecked
+                      className="mr-2 border"
+                    />
+                    Pickup
+                  </label>
+                  <label htmlFor="field-dropoff">
+                    <input
+                      {...register(`rides.${rideIdx}.rideType`)}
+                      type="radio"
+                      value="dropoff"
+                      id="field-dropoff"
+                      className="mr-2 border border-red-500"
+                    />
+                    Dropoff
+                  </label>
+                </div>
               </div>
             )
           })}
@@ -144,20 +155,17 @@ export const AddRideForm = ({
               aria-label="Add ride"
               disabled={hiCountBound}
               className={classNames(
-                'rounded-lg border border-black',
+                'btn-secondary h-fit w-fit rounded-full p-1',
                 hiCountBound && 'opacity-50'
               )}
               onClick={() => {
                 if (!hiCountBound) increment()
               }}
             >
-              <PlusIcon className="h-5 w-5" />
+              <PlusIcon className="h-4 w-4" />
             </button>
           </div>
-          <button
-            className="w-fit rounded-lg border border-indigo-500 bg-indigo-400 p-2 py-1"
-            type="submit"
-          >
+          <button className="btn btn-primary" type="submit">
             {rideCount.length > 1 ? 'Add Rides' : 'Add Ride'}
           </button>
         </form>
