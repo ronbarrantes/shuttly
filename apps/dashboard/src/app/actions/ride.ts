@@ -75,7 +75,9 @@ export const addRide = async (rideInfo: ZodRideType) => {
 
 export const getAllRides = async () => {
   const { userId } = auth()
-  if (!userId) throw new Error('Not logged in')
+
+  console.log('USER ID ===>>', userId)
+  // if (!userId) throw new Error('Not logged in')
 
   const rides = await prisma.ride.findMany({
     include: {

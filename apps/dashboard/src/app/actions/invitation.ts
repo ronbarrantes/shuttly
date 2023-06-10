@@ -2,6 +2,7 @@
 
 import { prisma } from 'db'
 import { clerkClient } from '@clerk/nextjs'
+import { revalidatePath } from 'next/cache'
 
 export const acceptInvitation = async ({
   userId,
@@ -35,6 +36,12 @@ export const acceptInvitation = async ({
       },
     })
 
+  console.log('testCompanyId', {
+    userId,
+    companyId,
+    invitationId,
+  })
+
   try {
     const [account, _invitation] = await prisma.$transaction([
       createAccount(),
@@ -52,11 +59,9 @@ export const acceptInvitation = async ({
     })
   } catch (error) {
     throw new Error('Something went wrong')
-  } finally {
-    // revalidatePath('/invitation')
-    // TODO: add a redirect to '/'
-    // https://github.com/ronbarrantes/shuttly/issues/38
   }
+
+  // revalidatePath('/invitation')
 }
 
 export const createTestAccount = async ({ userId }: { userId: string }) => {
