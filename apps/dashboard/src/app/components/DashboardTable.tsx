@@ -6,16 +6,17 @@ import { Button, Card } from 'ui'
 import { Table, createColumnHelper } from './react-table'
 
 import dayjs from 'dayjs'
-import { AllRides } from '@actions/ride'
+import { AllRides, DeleteRide } from '@actions/ride'
 import { Dialog } from '@components/Dialog'
 import { useState, useTransition } from 'react'
 import toast from 'react-hot-toast'
 
 interface DashboardTableProps {
   rides: AllRides[]
+  deleteRide: DeleteRide
 }
 
-export const DashboardTable = ({ rides }: DashboardTableProps) => {
+export const DashboardTable = ({ rides, deleteRide }: DashboardTableProps) => {
   const columnHelper = createColumnHelper<AllRides>()
   const [isOpen, setIsOpen] = useState(false)
   const [rideId, setRideId] = useState('')
@@ -94,11 +95,11 @@ export const DashboardTable = ({ rides }: DashboardTableProps) => {
               className="btn btn-warning"
               disabled={pending}
               onClick={() => {
-                console.log(rideId)
                 startTransition(async () => {
                   try {
-                    // await deleteRide(rideId)
+                    await deleteRide(rideId)
                     setIsOpen(false)
+                    toast.success('Ride deleted')
                   } catch (err: unknown) {
                     if (err instanceof Error) {
                       toast.error(err.message, {

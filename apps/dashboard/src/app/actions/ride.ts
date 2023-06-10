@@ -92,7 +92,34 @@ export const getAllRides = async () => {
   return rides
 }
 
+export const deleteRide = async (rideId: string) => {
+  const { userId } = auth()
+  if (!userId) throw new Error('Not logged in')
+
+  const ride = await prisma.ride.delete({
+    where: {
+      id: rideId,
+    },
+
+    select: {
+      id: true,
+      scheduledTime: true,
+      passenger: {
+        select: {
+          name: true,
+        },
+      },
+    },
+  })
+
+  console.log('RIDE DELETED ===>>', ride)
+
+  revalidatePath('/')
+  return ride
+}
+
 export type AddPassenger = typeof addPassenger
 export type AddRide = typeof addRide
+export type DeleteRide = typeof deleteRide
 export type AllRides = Awaited<ReturnType<typeof getAllRides>>[0]
 export type ZodRideType = z.infer<typeof rideObj>
