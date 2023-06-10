@@ -2,7 +2,6 @@
 
 import { prisma } from 'db'
 import { clerkClient } from '@clerk/nextjs'
-import { revalidatePath } from 'next/cache'
 
 export const acceptInvitation = async ({
   userId,
@@ -60,8 +59,6 @@ export const acceptInvitation = async ({
   } catch (error) {
     throw new Error('Something went wrong')
   }
-
-  // revalidatePath('/invitation')
 }
 
 export const createTestAccount = async ({ userId }: { userId: string }) => {
@@ -86,10 +83,7 @@ export const createTestAccount = async ({ userId }: { userId: string }) => {
     })
 
   try {
-    const [account] = await prisma.$transaction([
-      createAccount(),
-      // deleteInvitation(),
-    ])
+    const [account] = await prisma.$transaction([createAccount()])
 
     await clerkClient.users.updateUserMetadata(userId, {
       publicMetadata: {
@@ -103,10 +97,6 @@ export const createTestAccount = async ({ userId }: { userId: string }) => {
     })
   } catch (error) {
     throw new Error('Something went wrong')
-  } finally {
-    // revalidatePath('/invitation')
-    // TODO: add a redirect to '/'
-    // https://github.com/ronbarrantes/shuttly/issues/38
   }
 }
 
