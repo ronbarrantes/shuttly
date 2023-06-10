@@ -39,15 +39,12 @@ const rideObj = z
 
 export const addRide = async (rideInfo: ZodRideType) => {
   const { userId } = auth()
-  const user = await currentUser()
-
-  const testAccount = user?.privateMetadata?.testAccount
-
   if (!userId) throw new Error('Not logged in')
 
+  const testAccount = (await currentUser())?.privateMetadata.testAccount
   if (testAccount) {
     const { success: allowed } = await ratelimit.limit(userId)
-    if (!allowed) throw new Error('Number of rides in test account exceeded')
+    if (!allowed) throw new Error('Number of actions exceeded for today')
   }
 
   const passenger = await prisma.passenger.create({
@@ -95,6 +92,14 @@ export const getAllRides = async () => {
 export const deleteRide = async (rideId: string) => {
   const { userId } = auth()
   if (!userId) throw new Error('Not logged in')
+
+  const user = await currentUser()
+  const testAccount = user?.privateMetadata?.testAccount
+
+  if (testAccount) {
+    const { success: allowed } = await ratelimit.limit(userId)
+    if (!allowed) throw new Error('Number of actions exceeded for today')
+  }
 
   const ride = await prisma.ride.delete({
     where: {
