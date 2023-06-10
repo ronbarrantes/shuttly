@@ -8,23 +8,20 @@ import {
   settingsPageLinks,
 } from '@data/links'
 
-const LinkItems = ({ links, pathname }: LinkItemsProps) => (
-  <>
-    {links.map((link) => {
-      const path = !pathname ? link.href : `${pathname}${link.href}`
-      return (
-        <li key={link.name}>
-          <Link href={path}>{link.name}</Link>
-        </li>
-      )
-    })}
-  </>
-)
+const LinkItems = ({ links, pathname }: LinkItemsProps) =>
+  links.map((link) => {
+    const path = !pathname ? link.href : `${pathname}${link.href}`
+    return (
+      <li key={link.name}>
+        <Link href={path}>{link.name}</Link>
+      </li>
+    )
+  })
 
 export const MainNavigation = () => {
   return (
     <nav>
-      <ul className="flex items-center gap-3 border border-red-500">
+      <ul className="flex items-center gap-3">
         <LinkItems {...mainNavLinks} />
         <li>
           <SigninNavigation />
