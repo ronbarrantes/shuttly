@@ -6,7 +6,6 @@ import {
   acceptInvitation,
   createTestAccount,
 } from '@actions/invitation'
-import { useRouter } from 'next/navigation'
 
 type InvitationCardProps = {
   userInfo: Parameters<AcceptInvitation>[0]
@@ -18,7 +17,6 @@ type TestAccountCardProps = {
 
 export const InvitationCard = ({ userInfo }: InvitationCardProps) => {
   const [pending, startTransition] = useTransition()
-  const router = useRouter()
 
   const handleAcceptInvitation = () => {
     startTransition(async () => {
@@ -27,8 +25,6 @@ export const InvitationCard = ({ userInfo }: InvitationCardProps) => {
         companyId: userInfo.companyId,
         invitationId: userInfo.invitationId,
       })
-
-      router.push('/')
     })
   }
 
@@ -38,7 +34,7 @@ export const InvitationCard = ({ userInfo }: InvitationCardProps) => {
       <p>Please click the button to accept the invitation.</p>
       <button
         disabled={pending}
-        className="btn-primary"
+        className="btn btn-primary"
         onClick={handleAcceptInvitation}
       >
         Accept Invitation
@@ -49,12 +45,10 @@ export const InvitationCard = ({ userInfo }: InvitationCardProps) => {
 
 export const TestAccountCard = ({ userInfo }: TestAccountCardProps) => {
   const [pending, startTransition] = useTransition()
-  const router = useRouter()
 
   const handleCreateTestAccount = () => {
     startTransition(async () => {
       await createTestAccount({ userId: userInfo.userId })
-      router.push('/')
     })
   }
 
@@ -69,7 +63,7 @@ export const TestAccountCard = ({ userInfo }: TestAccountCardProps) => {
       </p>
       <button
         disabled={pending}
-        className="btn-primary"
+        className="btn btn-primary"
         onClick={handleCreateTestAccount}
       >
         Create Test Account
