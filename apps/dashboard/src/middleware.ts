@@ -1,6 +1,4 @@
 import { authMiddleware, clerkClient } from '@clerk/nextjs'
-// import { authMiddleware } from '@clerk/nextjs'
-
 import { NextResponse } from 'next/server'
 
 export default authMiddleware({
@@ -18,8 +16,6 @@ export default authMiddleware({
     // this happens during the invitation process
     let usr = null
     if (auth.userId) usr = await clerkClient.users.getUser(auth.userId)
-
-    console.log('HELLO WORLD FROM MIDDLDWARE ====>>>>')
 
     if (
       auth.userId &&
