@@ -65,7 +65,7 @@ export const DashboardTable = ({ rides, deleteRide }: DashboardTableProps) => {
         // return info.row.original.id<Dialog>
 
         return (
-          <div className="justify-end border border-red-500">
+          <div className="justify-end">
             <button
               type="button"
               className="btn btn-secondary"

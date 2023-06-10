@@ -137,7 +137,7 @@ export const AddRideForm = ({
                       type="radio"
                       value="dropoff"
                       id="field-dropoff"
-                      className="mr-2 border border-red-500"
+                      className="mr-2"
                     />
                     Dropoff
                   </label>
