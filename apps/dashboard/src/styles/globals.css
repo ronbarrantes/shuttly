@@ -6,8 +6,20 @@ body {
   @apply bg-slate-50 text-slate-800;
 }
 
+.btn {
+  @apply w-fit rounded-md p-3 py-2 font-bold disabled:bg-gray-500;
+}
+
 .btn-primary {
-  @apply w-fit rounded-md bg-indigo-600 p-3 py-1 font-bold text-indigo-100 hover:bg-slate-800 hover:text-white disabled:bg-gray-500;
+  @apply !bg-indigo-600 text-indigo-100 hover:!bg-slate-800;
+}
+
+.btn-secondary {
+  @apply border border-indigo-500 !bg-slate-200 text-indigo-800 hover:!border-slate-600 hover:!bg-slate-600 hover:text-slate-200 disabled:border-slate-200 disabled:!bg-slate-200 disabled:text-slate-400 disabled:hover:!border-slate-200 disabled:hover:text-slate-400;
+}
+
+.btn-warning {
+  @apply !bg-rose-600 text-white hover:!bg-slate-800;
 }
 
 .link-primary {

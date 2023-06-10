@@ -52,10 +52,6 @@ export const acceptInvitation = async ({
     })
   } catch (error) {
     throw new Error('Something went wrong')
-  } finally {
-    // revalidatePath('/invitation')
-    // TODO: add a redirect to '/'
-    // https://github.com/ronbarrantes/shuttly/issues/38
   }
 }
 
@@ -81,10 +77,7 @@ export const createTestAccount = async ({ userId }: { userId: string }) => {
     })
 
   try {
-    const [account] = await prisma.$transaction([
-      createAccount(),
-      // deleteInvitation(),
-    ])
+    const [account] = await prisma.$transaction([createAccount()])
 
     await clerkClient.users.updateUserMetadata(userId, {
       publicMetadata: {
@@ -98,10 +91,6 @@ export const createTestAccount = async ({ userId }: { userId: string }) => {
     })
   } catch (error) {
     throw new Error('Something went wrong')
-  } finally {
-    // revalidatePath('/invitation')
-    // TODO: add a redirect to '/'
-    // https://github.com/ronbarrantes/shuttly/issues/38
   }
 }
 

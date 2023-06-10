@@ -6,14 +6,21 @@ import { Button, Card } from 'ui'
 import { Table, createColumnHelper } from './react-table'
 
 import dayjs from 'dayjs'
-import { AllRides } from '@actions/ride'
+import { AllRides, DeleteRide } from '@actions/ride'
+import { Dialog } from '@components/Dialog'
+import { useState, useTransition } from 'react'
+import toast from 'react-hot-toast'
 
 interface DashboardTableProps {
   rides: AllRides[]
+  deleteRide: DeleteRide
 }
 
-export const DashboardTable = ({ rides }: DashboardTableProps) => {
+export const DashboardTable = ({ rides, deleteRide }: DashboardTableProps) => {
   const columnHelper = createColumnHelper<AllRides>()
+  const [isOpen, setIsOpen] = useState(false)
+  const [rideId, setRideId] = useState('')
+  const [pending, startTransition] = useTransition()
 
   // What do I wanna display
   // passenger name
@@ -51,11 +58,72 @@ export const DashboardTable = ({ rides }: DashboardTableProps) => {
         return time
       },
     }),
+    columnHelper.accessor('id', {
+      header: () => <span>currentId id</span>,
+      cell: (info) => {
+        // const time = dayjs(info.row.original.scheduledTime).format('h:mma')
+        // return info.row.original.id<Dialog>
+
+        return (
+          <div className="justify-end">
+            <button
+              type="button"
+              className="btn btn-secondary"
+              onClick={() => {
+                setIsOpen(true)
+                setRideId(info.row.original.id)
+              }}
+            >
+              Delete
+            </button>
+          </div>
+        )
+      },
+    }),
   ]
 
   return (
     <>
       <Table columns={columns} data={rides} />
+
+      <Dialog open={isOpen} onOpenChange={() => setIsOpen(!isOpen)}>
+        <Dialog.Content title="Remove this ride">
+          <p>Are you sure you want to delete this ride</p>
+          <div className="flex gap-3">
+            <button
+              type="button"
+              className="btn btn-warning"
+              disabled={pending}
+              onClick={() => {
+                startTransition(async () => {
+                  try {
+                    await deleteRide(rideId)
+                    setIsOpen(false)
+                    toast.success('Ride deleted')
+                  } catch (err: unknown) {
+                    if (err instanceof Error) {
+                      toast.error(err.message, {
+                        position: 'top-center',
+                      })
+                    }
+                  }
+                })
+              }}
+            >
+              Delete
+            </button>
+            <button
+              type="button"
+              className="btn btn-secondary"
+              onClick={() => {
+                setIsOpen(false)
+              }}
+            >
+              Cancel
+            </button>
+          </div>
+        </Dialog.Content>
+      </Dialog>
     </>
   )
 }

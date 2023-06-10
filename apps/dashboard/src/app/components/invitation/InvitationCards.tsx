@@ -34,7 +34,7 @@ export const InvitationCard = ({ userInfo }: InvitationCardProps) => {
       <p>Please click the button to accept the invitation.</p>
       <button
         disabled={pending}
-        className="btn-primary"
+        className="btn btn-primary"
         onClick={handleAcceptInvitation}
       >
         Accept Invitation
@@ -63,7 +63,7 @@ export const TestAccountCard = ({ userInfo }: TestAccountCardProps) => {
       </p>
       <button
         disabled={pending}
-        className="btn-primary"
+        className="btn btn-primary"
         onClick={handleCreateTestAccount}
       >
         Create Test Account
