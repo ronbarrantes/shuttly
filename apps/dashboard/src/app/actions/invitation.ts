@@ -35,12 +35,6 @@ export const acceptInvitation = async ({
       },
     })
 
-  console.log('testCompanyId', {
-    userId,
-    companyId,
-    invitationId,
-  })
-
   try {
     const [account, _invitation] = await prisma.$transaction([
       createAccount(),
