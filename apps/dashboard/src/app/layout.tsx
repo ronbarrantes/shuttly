@@ -13,10 +13,8 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="en">
         <body>
-          <>
-            {children}
-            <Toaster />
-          </>
+          {children}
+          <Toaster position="bottom-left" />
         </body>
       </html>
     </ClerkProvider>
