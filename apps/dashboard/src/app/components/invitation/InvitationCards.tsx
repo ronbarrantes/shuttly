@@ -28,7 +28,7 @@ export const InvitationCard = ({ userInfo }: InvitationCardProps) => {
         invitationId: userInfo.invitationId,
       })
 
-      await router.push('/')
+      router.push('/')
     })
   }
 
@@ -49,11 +49,12 @@ export const InvitationCard = ({ userInfo }: InvitationCardProps) => {
 
 export const TestAccountCard = ({ userInfo }: TestAccountCardProps) => {
   const [pending, startTransition] = useTransition()
+  const router = useRouter()
 
   const handleCreateTestAccount = () => {
     startTransition(async () => {
       await createTestAccount({ userId: userInfo.userId })
-      // router.push('/dashboard')
+      router.push('/')
     })
   }
 
