@@ -8,8 +8,14 @@ export interface DialogState {
   dialogContent?: React.ReactNode
 }
 
+type DialogAction =
+  | { type: 'OPEN'; dialogContent: React.ReactNode }
+  | { type: 'CLOSE' }
+
+const dialogReducer = (state: DialogState, action: DialogAction) => {}
+
 const DialogTitle = ({ children }: { children: React.ReactNode }) => (
-  <DialogPrimitive.Title className="text-mauve12 m-0 mb-2 text-xl font-semibold">
+  <DialogPrimitive.Title className="m-0 mb-2 text-xl font-semibold text-mauve12">
     {children}
   </DialogPrimitive.Title>
 )
