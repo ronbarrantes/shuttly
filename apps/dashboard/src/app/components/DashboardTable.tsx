@@ -135,17 +135,15 @@ export const DashboardTable = ({ rides, deleteRide }: DashboardTableProps) => {
           </div>
         </Dialog.Content>
       </Dialog>
-      <DialogV2
-        open={dialogStore.isOpen}
-        onOpenChange={dialogStore.handleDialogClose}
-      >
-        {dialogStore.dialogContent}
-      </DialogV2>
-
       <button
         type="button"
         className="btn btn-secondary"
-        onClick={() => dialogStore.handleDialog(<div>hello</div>)}
+        onClick={() =>
+          dialogStore.handleDialog({
+            title: 'HELLO WORLD',
+            content: <div>hello</div>,
+          })
+        }
       >
         Open dialog
       </button>
