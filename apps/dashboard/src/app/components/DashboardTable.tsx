@@ -1,8 +1,5 @@
 'use client'
 
-import type { Ride, Passenger } from 'db'
-import { Button, Card } from 'ui'
-
 import { Table, createColumnHelper } from './react-table'
 
 import dayjs from 'dayjs'
@@ -59,13 +56,27 @@ export const DashboardTable = ({ rides, deleteRide }: DashboardTableProps) => {
       },
     }),
     columnHelper.accessor('id', {
-      header: () => <span>currentId id</span>,
+      header: () => <span>More</span>,
       cell: (info) => {
         // const time = dayjs(info.row.original.scheduledTime).format('h:mma')
         // return info.row.original.id<Dialog>
 
         return (
-          <div className="justify-end">
+          <div className="flex justify-center gap-2">
+            <button
+              type="button"
+              className="btn btn-secondary"
+              onClick={() => {
+                // setIsOpen(true)
+                // setRideId(info.row.original.id)
+                console.log('====================================')
+                console.log('EDITING')
+                console.log('====================================')
+              }}
+            >
+              Edit
+            </button>
+
             <button
               type="button"
               className="btn btn-secondary"
