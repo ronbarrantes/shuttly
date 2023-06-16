@@ -7,7 +7,7 @@ body {
 }
 
 .btn {
-  @apply w-fit rounded-md p-3 py-2 font-bold disabled:bg-gray-500;
+  @apply p-3 py-2 font-bold rounded-md w-fit disabled:bg-gray-500;
 }
 
 .btn-primary {
@@ -19,7 +19,7 @@ body {
 }
 
 .btn-warning {
-  @apply !bg-rose-600 text-white hover:!bg-slate-800;
+  @apply !bg-rose-600 text-white hover:!bg-slate-800 disabled:!bg-rose-900 disabled:hover:!bg-rose-900;
 }
 
 .link-primary {
