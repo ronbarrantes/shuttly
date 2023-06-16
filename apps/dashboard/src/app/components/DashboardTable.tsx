@@ -15,8 +15,6 @@ interface DashboardTableProps {
 
 export const DashboardTable = ({ rides, deleteRide }: DashboardTableProps) => {
   const columnHelper = createColumnHelper<AllRides>()
-  const [isOpen, setIsOpen] = useState(false)
-  const [rideId, setRideId] = useState('')
   const [pending, startTransition] = useTransition()
   const dialogStore = DialogV2.useDialogStore()
 
@@ -27,6 +25,52 @@ export const DashboardTable = ({ rides, deleteRide }: DashboardTableProps) => {
   // ride type
   // ride status
   // has driver
+
+  const handleEditRide = (rideId: string) => {}
+  const handleDeleteRide = (rideId: string) => {
+    dialogStore.handleDialog({
+      title: 'Delete ride',
+      content: (
+        <>
+          <p>Are you sure you want to delete this ride</p>
+          <div className="flex gap-3">
+            <button
+              type="button"
+              className="btn btn-warning"
+              disabled={pending}
+              onClick={() => {
+                startTransition(async () => {
+                  try {
+                    await deleteRide(rideId)
+                    toast.success('Ride deleted')
+                  } catch (err: unknown) {
+                    if (err instanceof Error) {
+                      toast.error(err.message, {
+                        position: 'top-center',
+                      })
+                    }
+                  } finally {
+                    dialogStore.handleDialogClose()
+                  }
+                })
+              }}
+            >
+              Delete
+            </button>
+            <button
+              type="button"
+              className="btn btn-secondary"
+              onClick={() => {
+                dialogStore.handleDialogClose()
+              }}
+            >
+              Cancel
+            </button>
+          </div>
+        </>
+      ),
+    })
+  }
 
   const columns = [
     columnHelper.accessor('passenger.name', {
@@ -81,10 +125,7 @@ export const DashboardTable = ({ rides, deleteRide }: DashboardTableProps) => {
             <button
               type="button"
               className="btn btn-secondary"
-              onClick={() => {
-                setIsOpen(true)
-                setRideId(info.row.original.id)
-              }}
+              onClick={() => handleDeleteRide(info.row.original.id)}
             >
               Delete
             </button>
@@ -97,44 +138,6 @@ export const DashboardTable = ({ rides, deleteRide }: DashboardTableProps) => {
   return (
     <>
       <Table columns={columns} data={rides} />
-      <Dialog open={isOpen} onOpenChange={() => setIsOpen(!isOpen)}>
-        <Dialog.Content title="Remove this ride">
-          <p>Are you sure you want to delete this ride</p>
-          <div className="flex gap-3">
-            <button
-              type="button"
-              className="btn btn-warning"
-              disabled={pending}
-              onClick={() => {
-                startTransition(async () => {
-                  try {
-                    await deleteRide(rideId)
-                    setIsOpen(false)
-                    toast.success('Ride deleted')
-                  } catch (err: unknown) {
-                    if (err instanceof Error) {
-                      toast.error(err.message, {
-                        position: 'top-center',
-                      })
-                    }
-                  }
-                })
-              }}
-            >
-              Delete
-            </button>
-            <button
-              type="button"
-              className="btn btn-secondary"
-              onClick={() => {
-                setIsOpen(false)
-              }}
-            >
-              Cancel
-            </button>
-          </div>
-        </Dialog.Content>
-      </Dialog>
       <button
         type="button"
         className="btn btn-secondary"
