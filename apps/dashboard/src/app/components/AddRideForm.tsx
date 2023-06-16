@@ -2,7 +2,7 @@
 import { useState, useTransition } from 'react'
 import { PlusIcon, MinusIcon } from '@radix-ui/react-icons'
 import classNames from 'classnames'
-import { type AddPassenger, type AddRide, ZodRideType } from '@actions/ride'
+import { type AddRide, ZodRideType } from '@actions/ride'
 import { Dialog } from '@components/Dialog'
 import dayjs from 'dayjs'
 import { useForm } from 'react-hook-form'
@@ -10,16 +10,11 @@ import { useKeepCount } from '@hooks'
 import toast from 'react-hot-toast'
 
 type AddRideFormProps = {
-  addPassenger: AddPassenger
   addRide: AddRide
   companyId: string
 }
 
-export const AddRideForm = ({
-  addPassenger,
-  addRide,
-  companyId,
-}: AddRideFormProps) => {
+export const AddRideForm = ({ addRide, companyId }: AddRideFormProps) => {
   const [pending, startTransition] = useTransition()
   const [isOpen, setIsOpen] = useState(false)
   const {
@@ -75,10 +70,10 @@ export const AddRideForm = ({
           <input
             {...register('address', { required: true })}
             placeholder="Address"
-            className="rounded-md border border-slate-500 px-2 py-1"
+            className="px-2 py-1 border rounded-md border-slate-500"
           />
           <input
-            className="rounded-md border border-slate-500 px-2 py-1"
+            className="px-2 py-1 border rounded-md border-slate-500"
             placeholder="Phone Number"
             {...register('phone', { required: true })}
           />
@@ -87,12 +82,12 @@ export const AddRideForm = ({
             return (
               <div
                 key={`${rideIdx}-${idx}`}
-                className="flex flex-col gap-3 border-b border-slate-200 py-3"
+                className="flex flex-col gap-3 py-3 border-b border-slate-200"
               >
                 <div className="relative flex items-center justify-between">
                   <input
                     type="datetime-local"
-                    className="h-fit w-fit rounded-md border border-slate-500 px-2 py-1"
+                    className="px-2 py-1 border rounded-md h-fit w-fit border-slate-500"
                     placeholder="Date"
                     max={dayjs().add(2, 'month').format('YYYY-MM-DDThh:mm')}
                     min={dayjs().format('YYYY-MM-DDThh:mm')}
@@ -106,7 +101,6 @@ export const AddRideForm = ({
                     aria-label="Remove ride"
                     className={classNames(
                       'btn-secondary absolute right-1 top-0 h-fit w-fit rounded-full p-1'
-                      // loCountBound && 'opacity-50'
                     )}
                     onClick={() => {
                       if (!loCountBound) {
@@ -115,7 +109,7 @@ export const AddRideForm = ({
                     }}
                     disabled={loCountBound}
                   >
-                    <MinusIcon className="h-4 w-4" />
+                    <MinusIcon className="w-4 h-4" />
                   </button>
                 </div>
 
@@ -162,7 +156,7 @@ export const AddRideForm = ({
                 if (!hiCountBound) increment()
               }}
             >
-              <PlusIcon className="h-4 w-4" />
+              <PlusIcon className="w-4 h-4" />
             </button>
           </div>
           <button className="btn btn-primary" type="submit" disabled={pending}>
