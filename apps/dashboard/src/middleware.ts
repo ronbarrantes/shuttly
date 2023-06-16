@@ -1,4 +1,4 @@
-import { authMiddleware, clerkClient } from '@clerk/nextjs'
+import { authMiddleware, clerkClient, redirectToSignIn } from '@clerk/nextjs'
 import { NextResponse } from 'next/server'
 
 export default authMiddleware({
@@ -25,23 +25,34 @@ export default authMiddleware({
     let usr = null
     if (auth.userId) usr = await clerkClient.users.getUser(auth.userId)
 
-    console.log('USR ====>>', usr?.id)
-
     console.log('### Signed in Check, but not assigned ###')
     if (
       auth.userId &&
       !usr?.privateMetadata.companyId &&
       req.nextUrl.pathname !== '/invitation'
     ) {
+      console.log('### Redirect to invitation ###')
       const invitation = new URL('/invitation', req.url)
       return NextResponse.redirect(invitation)
     }
-
-    console.log('### Redirect to dashboard ###')
-
-    // console.log('### Redirect to dashboard ###')
   },
 })
+
+// export default authMiddleware({
+//   afterAuth(auth, req, _evt) {
+//     // handle users who aren't authenticated
+//     if (!auth.userId && !auth.isPublicRoute) {
+//       return redirectToSignIn({ returnBackUrl: req.url });
+//     }
+
+//     // redirect them to organization selection page
+//     if(auth.userId && !auth.orgId && (req.nextUrl.pathname !== "/org-selection")){
+//       const orgSelection = new URL('/org-selection', req.url)
+//       return NextResponse.redirect(orgSelection)
+//     }
+//   }
+
+// });
 
 export const config = {
   matcher: ['/((?!.*\\..*|_next).*)', '/(api|trpc)(.*)'],
