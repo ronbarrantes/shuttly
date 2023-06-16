@@ -2,17 +2,9 @@ import React from 'react'
 import * as DialogPrimitive from '@radix-ui/react-dialog'
 import { Cross2Icon } from '@radix-ui/react-icons'
 import classNames from 'classnames'
+import { createContext, useContext } from 'react'
 
-export interface DialogState {
-  isOpen: boolean
-  dialogContent?: React.ReactNode
-}
-
-type DialogAction =
-  | { type: 'OPEN'; dialogContent: React.ReactNode }
-  | { type: 'CLOSE' }
-
-const dialogReducer = (state: DialogState, action: DialogAction) => {}
+import { create } from 'zustand'
 
 const DialogTitle = ({ children }: { children: React.ReactNode }) => (
   <DialogPrimitive.Title className="m-0 mb-2 text-xl font-semibold text-mauve12">
@@ -74,6 +66,8 @@ const DialogTrigger = ({
   children: React.ReactNode
   className?: string
 }) => {
+  /// may have to use the dialogStore to open and close the dialog
+
   return (
     <DialogPrimitive.Trigger asChild>
       <button
@@ -106,3 +100,36 @@ export const Dialog = ({ open, onOpenChange, children }: DialogProps) => {
 Dialog.Trigger = DialogTrigger
 Dialog.Content = DialogContent
 Dialog.Close = DialogClose
+
+// VVV           VVV        22222222
+//  VVV         VVV       222      222
+//   VVV       VVV                222
+//    VVV     VVV               222
+//     VVV   VVV            222
+//      VVV VVV           222
+//       VVVV             222222222222
+interface DialogState {
+  isOpen: boolean
+  setIsOpen: () => void
+  dialogContent: React.ReactNode
+  handleDialog: (content: React.ReactNode) => void
+  handleDialogClose: () => void
+}
+
+export const useDialogStore = create<DialogState>((set) => ({
+  isOpen: false,
+  setIsOpen: () => set((state) => ({ isOpen: !state.isOpen })),
+  dialogContent: null,
+  handleDialog: (content) => set({ dialogContent: content, isOpen: true }),
+  handleDialogClose: () => set({ dialogContent: null, isOpen: false }),
+}))
+
+export const DialogV2 = ({ open, onOpenChange, children }: DialogProps) => {
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <Dialog.Content title="Remove this ride">{children}</Dialog.Content>
+    </Dialog>
+  )
+}
+
+DialogV2.useDialogStore = useDialogStore

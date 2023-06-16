@@ -4,7 +4,7 @@ import { Table, createColumnHelper } from './react-table'
 
 import dayjs from 'dayjs'
 import { AllRides, DeleteRide } from '@actions/ride'
-import { Dialog } from '@components/Dialog'
+import { Dialog, DialogV2 } from '@components/Dialog'
 import { useState, useTransition } from 'react'
 import toast from 'react-hot-toast'
 
@@ -18,6 +18,7 @@ export const DashboardTable = ({ rides, deleteRide }: DashboardTableProps) => {
   const [isOpen, setIsOpen] = useState(false)
   const [rideId, setRideId] = useState('')
   const [pending, startTransition] = useTransition()
+  const dialogStore = DialogV2.useDialogStore()
 
   // What do I wanna display
   // passenger name
@@ -96,7 +97,6 @@ export const DashboardTable = ({ rides, deleteRide }: DashboardTableProps) => {
   return (
     <>
       <Table columns={columns} data={rides} />
-
       <Dialog open={isOpen} onOpenChange={() => setIsOpen(!isOpen)}>
         <Dialog.Content title="Remove this ride">
           <p>Are you sure you want to delete this ride</p>
@@ -135,6 +135,20 @@ export const DashboardTable = ({ rides, deleteRide }: DashboardTableProps) => {
           </div>
         </Dialog.Content>
       </Dialog>
+      <DialogV2
+        open={dialogStore.isOpen}
+        onOpenChange={dialogStore.handleDialogClose}
+      >
+        {dialogStore.dialogContent}
+      </DialogV2>
+
+      <button
+        type="button"
+        className="btn btn-secondary"
+        onClick={() => dialogStore.handleDialog(<div>hello</div>)}
+      >
+        Open dialog
+      </button>
     </>
   )
 }
