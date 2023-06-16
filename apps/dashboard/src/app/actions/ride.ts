@@ -6,9 +6,8 @@ import { revalidatePath } from 'next/cache'
 import { auth, currentUser } from '@clerk/nextjs'
 import { ratelimit } from '@/client-data/utils/rate-limiter'
 
-export const addPassenger = async ({}) => {
-  console.log('ADDING A PASSENGER')
-}
+// TODO: Create a way to search for the current passengers and add rides to them
+// if they already exist
 
 const rideObj = z
   .object({
@@ -89,6 +88,10 @@ export const getAllRides = async () => {
   return rides
 }
 
+export const editRide = async (rideInfo: ZodRideTypeWithId) => {
+  console.log('EDIT RIDE INFO ===>>', rideInfo)
+}
+
 export const deleteRide = async (rideId: string) => {
   const { userId } = auth()
   if (!userId) throw new Error('Not logged in')
@@ -123,8 +126,9 @@ export const deleteRide = async (rideId: string) => {
   return ride
 }
 
-export type AddPassenger = typeof addPassenger
 export type AddRide = typeof addRide
 export type DeleteRide = typeof deleteRide
+export type EditRide = typeof editRide
 export type AllRides = Awaited<ReturnType<typeof getAllRides>>[0]
 export type ZodRideType = z.infer<typeof rideObj>
+export type ZodRideTypeWithId = ZodRideType & { id: string }
