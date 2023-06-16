@@ -1,8 +1,8 @@
+'use client'
 import React from 'react'
 import * as DialogPrimitive from '@radix-ui/react-dialog'
 import { Cross2Icon } from '@radix-ui/react-icons'
 import classNames from 'classnames'
-import { createContext, useContext } from 'react'
 
 import { create } from 'zustand'
 
@@ -112,22 +112,34 @@ interface DialogState {
   isOpen: boolean
   setIsOpen: () => void
   dialogContent: React.ReactNode
-  handleDialog: (content: React.ReactNode) => void
+  dialogTitle: string
+  handleDialog: ({
+    content,
+    title,
+  }: {
+    title: string
+    content: React.ReactNode
+  }) => void
   handleDialogClose: () => void
 }
 
 export const useDialogStore = create<DialogState>((set) => ({
   isOpen: false,
   setIsOpen: () => set((state) => ({ isOpen: !state.isOpen })),
+  dialogTitle: '',
   dialogContent: null,
-  handleDialog: (content) => set({ dialogContent: content, isOpen: true }),
+  handleDialog: ({ title, content }) =>
+    set({ dialogTitle: title, dialogContent: content, isOpen: true }),
   handleDialogClose: () => set({ dialogContent: null, isOpen: false }),
 }))
 
-export const DialogV2 = ({ open, onOpenChange, children }: DialogProps) => {
+export const DialogV2 = () => {
+  const dialogStore = useDialogStore()
+  const { isOpen, dialogContent, dialogTitle, handleDialogClose } = dialogStore
+
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <Dialog.Content title="Remove this ride">{children}</Dialog.Content>
+    <Dialog open={isOpen} onOpenChange={handleDialogClose}>
+      <Dialog.Content title={dialogTitle}>{dialogContent}</Dialog.Content>
     </Dialog>
   )
 }
