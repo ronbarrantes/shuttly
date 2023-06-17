@@ -36,6 +36,13 @@ const rideObj = z
     }
   })
 
+const rideEditObj = z.object({
+  id: z.string(),
+  scheduledTime: z.date(),
+  altAddress: z.string().optional(),
+  driverId: z.string().optional(),
+})
+
 export const addRide = async (rideInfo: ZodRideType) => {
   const { userId } = auth()
   if (!userId) throw new Error('Not logged in')
@@ -88,8 +95,31 @@ export const getAllRides = async () => {
   return rides
 }
 
-export const editRide = async (rideInfo: ZodRideTypeWithId) => {
-  console.log('EDIT RIDE INFO ===>>', rideInfo)
+export const editRide = async (rideInfo: ZodEditRide) => {
+  const { userId } = auth()
+  if (!userId) throw new Error('Not logged in')
+
+  const user = await currentUser()
+  const testAccount = user?.privateMetadata?.testAccount
+
+  if (testAccount) {
+    const { success: allowed } = await ratelimit.limit(userId)
+    if (!allowed) throw new Error('Number of actions exceeded for today')
+  }
+
+  const ride = await prisma.ride.update({
+    where: {
+      id: rideInfo.id,
+    },
+    data: {
+      scheduledTime: new Date(rideInfo.scheduledTime),
+      altAddress: rideInfo.altAddress,
+      driverId: rideInfo.driverId,
+    },
+  })
+
+  revalidatePath('/')
+  return ride
 }
 
 export const deleteRide = async (rideId: string) => {
@@ -131,4 +161,4 @@ export type DeleteRide = typeof deleteRide
 export type EditRide = typeof editRide
 export type AllRides = Awaited<ReturnType<typeof getAllRides>>[0]
 export type ZodRideType = z.infer<typeof rideObj>
-export type ZodRideTypeWithId = ZodRideType & { id: string }
+export type ZodEditRide = z.infer<typeof rideEditObj>

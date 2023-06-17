@@ -55,6 +55,7 @@ export const AddRideForm = ({ addRide, companyId }: AddRideFormProps) => {
     })
   }
 
+  /// USE THE DialogV2
   return (
     <Dialog open={isOpen} onOpenChange={() => setIsOpen(!isOpen)}>
       <Dialog.Trigger className="btn btn-primary">Add a Ride</Dialog.Trigger>
