@@ -3,20 +3,36 @@
 import { Table, createColumnHelper } from './react-table'
 
 import dayjs from 'dayjs'
-import { AllRides, DeleteRide } from '@actions/ride'
+import { AllRides, DeleteRide, EditRide, ZodEditRide } from '@actions/ride'
 import { Dialog, DialogV2 } from '@components/Dialog'
 import { useState, useTransition } from 'react'
 import toast from 'react-hot-toast'
+import { useForm } from 'react-hook-form'
 
 interface DashboardTableProps {
   rides: AllRides[]
   deleteRide: DeleteRide
+  editRide: EditRide
 }
 
-export const DashboardTable = ({ rides, deleteRide }: DashboardTableProps) => {
+export const DashboardTable = ({
+  rides,
+  deleteRide,
+  editRide,
+}: DashboardTableProps) => {
   const columnHelper = createColumnHelper<AllRides>()
   const [pending, startTransition] = useTransition()
   const dialogStore = DialogV2.useDialogStore()
+  const [rideId, setRideId] = useState('')
+
+  const {
+    watch, // REMOVE LATER
+    register,
+    reset,
+    handleSubmit,
+    setValue,
+    formState: { errors }, // REMOVE LATER
+  } = useForm<ZodEditRide>()
 
   // What do I wanna display
   // passenger name
@@ -26,7 +42,83 @@ export const DashboardTable = ({ rides, deleteRide }: DashboardTableProps) => {
   // ride status
   // has driver
 
-  const handleEditRide = (rideId: string) => {}
+  const onSubmit = (data: ZodEditRide) => {
+    startTransition(async () => {
+      try {
+        await editRide(data)
+      } catch (err: unknown) {
+        if (err instanceof Error) {
+          toast.error(err.message, {
+            position: 'top-center',
+          })
+        }
+      }
+
+      reset()
+      dialogStore.handleDialogClose()
+    })
+  }
+
+  const handleEditRide = (rideId: string, rideName: string) => {
+    setValue('id', rideId)
+    dialogStore.handleDialog({
+      title: 'Edit ride',
+      content: (
+        <>
+          <p>Editing ride for {rideName}</p>
+          <form
+            className="flex flex-col gap-2"
+            onSubmit={handleSubmit(onSubmit)}
+          >
+            <input
+              {...register('altAddress')}
+              placeholder="Alternate Address"
+              className="px-2 py-1 border rounded-md border-slate-500"
+            />
+            {/* <input
+              className="px-2 py-1 border rounded-md border-slate-500"
+              placeholder="Phone Number"
+              {...register('phone', { required: true })}
+            /> */}
+            <input
+              type="datetime-local"
+              className="px-2 py-1 border rounded-md h-fit w-fit border-slate-500"
+              placeholder="Date"
+              max={dayjs().add(2, 'weeks').format('YYYY-MM-DDThh:mm')}
+              min={dayjs().format('YYYY-MM-DDThh:mm')}
+              {...register('scheduledTime', {
+                required: true,
+              })}
+            />
+
+            {
+              /// allow to change drivers or something like that
+            }
+
+            <div className="flex gap-3">
+              <button
+                className="btn btn-primary"
+                type="submit"
+                disabled={pending}
+              >
+                Edit ride
+              </button>
+
+              <button
+                type="button"
+                className="btn btn-secondary"
+                onClick={() => {
+                  dialogStore.handleDialogClose()
+                }}
+              >
+                Cancel
+              </button>
+            </div>
+          </form>
+        </>
+      ),
+    })
+  }
   const handleDeleteRide = (rideId: string) => {
     dialogStore.handleDialog({
       title: 'Delete ride',
@@ -61,6 +153,7 @@ export const DashboardTable = ({ rides, deleteRide }: DashboardTableProps) => {
               type="button"
               className="btn btn-secondary"
               onClick={() => {
+                reset()
                 dialogStore.handleDialogClose()
               }}
             >
@@ -117,6 +210,10 @@ export const DashboardTable = ({ rides, deleteRide }: DashboardTableProps) => {
                 console.log('====================================')
                 console.log('EDITING')
                 console.log('====================================')
+                handleEditRide(
+                  info.row.original.id,
+                  info.row.original.passenger.name
+                )
               }}
             >
               Edit

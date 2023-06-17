@@ -99,13 +99,15 @@ export const editRide = async (rideInfo: ZodEditRide) => {
   const { userId } = auth()
   if (!userId) throw new Error('Not logged in')
 
-  const user = await currentUser()
-  const testAccount = user?.privateMetadata?.testAccount
+  // const user = await currentUser()
+  // const testAccount = user?.privateMetadata?.testAccount
 
-  if (testAccount) {
-    const { success: allowed } = await ratelimit.limit(userId)
-    if (!allowed) throw new Error('Number of actions exceeded for today')
-  }
+  console.log('RIDE INFO ===>>', rideInfo)
+
+  // if (testAccount) {
+  //   const { success: allowed } = await ratelimit.limit(userId)
+  //   if (!allowed) throw new Error('Number of actions exceeded for today')
+  // }
 
   const ride = await prisma.ride.update({
     where: {
