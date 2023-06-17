@@ -6,7 +6,8 @@
     "studio": "turbo run studio",
     "lint": "turbo lint",
     "clean": "turbo clean",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\""
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "deploy-request": "pscale deploy-request create shuttle dev"
   },
   "devDependencies": {
     "eslint": "^7.32.0",
