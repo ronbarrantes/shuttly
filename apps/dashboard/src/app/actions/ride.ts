@@ -38,7 +38,8 @@ const rideObj = z
 
 const rideEditObj = z.object({
   id: z.string(),
-  scheduledTime: z.date(),
+  clearAltAddress: z.boolean().optional(),
+  scheduledTime: z.date().optional(),
   altAddress: z.string().optional(),
   driverId: z.string().optional(),
 })
@@ -114,9 +115,11 @@ export const editRide = async (rideInfo: ZodEditRide) => {
       id: rideInfo.id,
     },
     data: {
-      scheduledTime: new Date(rideInfo.scheduledTime),
-      altAddress: rideInfo.altAddress,
-      driverId: rideInfo.driverId,
+      scheduledTime: rideInfo.scheduledTime
+        ? new Date(rideInfo.scheduledTime)
+        : undefined,
+      altAddress: null, //  rideInfo.altAddress?.length ? rideInfo.altAddress : undefined,
+      driverId: rideInfo.driverId?.length ? rideInfo.driverId : undefined,
     },
   })
 

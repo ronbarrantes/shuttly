@@ -8,6 +8,7 @@ import { Dialog, DialogV2 } from '@components/Dialog'
 import { useState, useTransition } from 'react'
 import toast from 'react-hot-toast'
 import { useForm } from 'react-hook-form'
+import { Switch } from '@components/Switch'
 
 interface DashboardTableProps {
   rides: AllRides[]
@@ -65,7 +66,9 @@ export const DashboardTable = ({
       title: 'Edit ride',
       content: (
         <>
-          <p>Editing ride for {rideName}</p>
+          <p>Editing ride for {rideName}!</p>
+
+          <Switch label="Use Alt address" id="use-alt-address" />
           <form
             className="flex flex-col gap-2"
             onSubmit={handleSubmit(onSubmit)}
@@ -184,7 +187,15 @@ export const DashboardTable = ({
     // }),
     columnHelper.accessor('passenger.address', {
       header: () => <span>Address</span>,
-      cell: (info) => info.getValue(),
+
+      cell: (info) => {
+        // info.getValue()
+        console.log(info.row.original.altAddress)
+        const address = info.row.original.altAddress?.length
+          ? info.row.original.altAddress
+          : info.getValue()
+        return address
+      },
     }),
     columnHelper.accessor('scheduledTime', {
       header: () => <span>Scheduled Time</span>,
