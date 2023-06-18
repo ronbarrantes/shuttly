@@ -13,6 +13,7 @@ module.exports = {
     {
       files: ['**/*.js', '**/*.ts', '**/*.jsx', '**/*.tsx'],
       rules: {
+        'simple-import-sort/exports': 'error',
         'simple-import-sort/imports': [
           'error',
           {
