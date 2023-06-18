@@ -1,9 +1,10 @@
 import { type PropsWithChildren } from 'react'
+
+import classNames from 'classnames'
+
 import { Footer } from './footer'
 import { Header } from './Header'
 import { MainNavigation } from './navigation'
-
-import classNames from 'classnames'
 
 export const PageLayout = (
   props: PropsWithChildren & {

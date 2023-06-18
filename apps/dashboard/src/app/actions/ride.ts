@@ -1,14 +1,15 @@
 'use server'
 
+import { revalidatePath } from 'next/cache'
+
+import { auth, currentUser } from '@clerk/nextjs'
 import { prisma } from 'db'
 import { z } from 'zod'
-import { revalidatePath } from 'next/cache'
-import { auth, currentUser } from '@clerk/nextjs'
+
 import { ratelimit } from '@/client-data/utils/rate-limiter'
 
-export const addPassenger = async ({}) => {
-  console.log('ADDING A PASSENGER')
-}
+// TODO: Create a way to search for the current passengers and add rides to them
+// if they already exist
 
 const rideObj = z
   .object({
@@ -36,6 +37,14 @@ const rideObj = z
       }
     }
   })
+
+const rideEditObj = z.object({
+  id: z.string(),
+  scheduledTime: z.string().optional(),
+  altAddress: z.string().optional(),
+  useAltAddress: z.boolean().optional(),
+  driverId: z.string().optional(),
+})
 
 export const addRide = async (rideInfo: ZodRideType) => {
   const { userId } = auth()
@@ -72,21 +81,53 @@ export const addRide = async (rideInfo: ZodRideType) => {
 
 export const getAllRides = async () => {
   const { userId } = auth()
-
-  console.log('USER ID ===>>', userId)
-  // if (!userId) throw new Error('Not logged in')
+  if (!userId) throw new Error('Not logged in')
 
   const rides = await prisma.ride.findMany({
     include: {
       driver: true,
       passenger: true,
     },
-    take: 10, // for now, get all of them later
+    take: 10,
     orderBy: {
       createdAt: 'desc',
     },
   })
   return rides
+}
+
+export const editRide = async (rideInfo: ZodEditRide) => {
+  const { userId } = auth()
+  if (!userId) throw new Error('Not logged in')
+
+  const user = await currentUser()
+  const testAccount = user?.privateMetadata?.testAccount
+
+  if (testAccount) {
+    const { success: allowed } = await ratelimit.limit(userId)
+    if (!allowed) throw new Error('Number of actions exceeded for today')
+  }
+
+  const useAltAddress = rideInfo.altAddress?.length
+    ? rideInfo.useAltAddress
+    : false
+
+  const ride = await prisma.ride.update({
+    where: {
+      id: rideInfo.id,
+    },
+    data: {
+      scheduledTime: rideInfo.scheduledTime
+        ? new Date(rideInfo.scheduledTime)
+        : undefined,
+      altAddress: rideInfo.altAddress?.length ? rideInfo.altAddress : undefined,
+      driverId: rideInfo.driverId?.length ? rideInfo.driverId : undefined,
+      useAltAddress,
+    },
+  })
+
+  revalidatePath('/')
+  return ride
 }
 
 export const deleteRide = async (rideId: string) => {
@@ -117,14 +158,13 @@ export const deleteRide = async (rideId: string) => {
     },
   })
 
-  console.log('RIDE DELETED ===>>', ride)
-
   revalidatePath('/')
   return ride
 }
 
-export type AddPassenger = typeof addPassenger
 export type AddRide = typeof addRide
 export type DeleteRide = typeof deleteRide
+export type EditRide = typeof editRide
 export type AllRides = Awaited<ReturnType<typeof getAllRides>>[0]
 export type ZodRideType = z.infer<typeof rideObj>
+export type ZodEditRide = z.infer<typeof rideEditObj>

@@ -1,15 +1,13 @@
+'use client'
 import React from 'react'
+
 import * as DialogPrimitive from '@radix-ui/react-dialog'
 import { Cross2Icon } from '@radix-ui/react-icons'
 import classNames from 'classnames'
-
-export interface DialogState {
-  isOpen: boolean
-  dialogContent?: React.ReactNode
-}
+import { create } from 'zustand'
 
 const DialogTitle = ({ children }: { children: React.ReactNode }) => (
-  <DialogPrimitive.Title className="text-mauve12 m-0 mb-2 text-xl font-semibold">
+  <DialogPrimitive.Title className="m-0 mb-2 text-xl font-semibold text-mauve12">
     {children}
   </DialogPrimitive.Title>
 )
@@ -33,8 +31,7 @@ const DialogContent = ({
 }) => {
   return (
     <DialogPrimitive.Portal>
-      <DialogPrimitive.Overlay className="data-[state=open]:animate-overlayShow fixed inset-0" />
-      {/* // backdrop-blur-sm" /> */}
+      <DialogPrimitive.Overlay className="data-[state=open]:animate-overlayShow fixed inset-0 backdrop-blur-sm" />
       <DialogPrimitive.Content
         className={classNames(
           'data-[state=open]:animate-contentShow fixed left-[50%] top-[50%] max-h-[85vh] w-[90vw] max-w-[450px] translate-x-[-50%] translate-y-[-50%] rounded-[6px] border border-slate-200 bg-white p-[25px] text-black shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none',
@@ -100,3 +97,49 @@ export const Dialog = ({ open, onOpenChange, children }: DialogProps) => {
 Dialog.Trigger = DialogTrigger
 Dialog.Content = DialogContent
 Dialog.Close = DialogClose
+
+// VVV           VVV        22222222
+//  VVV         VVV       222      222
+//   VVV       VVV                222
+//    VVV     VVV               222
+//     VVV   VVV            222
+//      VVV VVV           222
+//       VVVVV           2222222222222
+
+interface DialogState {
+  isOpen: boolean
+  setIsOpen: () => void
+  dialogContent: React.ReactNode
+  dialogTitle: string
+  handleDialog: ({
+    content,
+    title,
+  }: {
+    title: string
+    content: React.ReactNode
+  }) => void
+  handleDialogClose: () => void
+}
+
+export const useDialogStore = create<DialogState>((set) => ({
+  isOpen: false,
+  setIsOpen: () => set((state) => ({ isOpen: !state.isOpen })),
+  dialogTitle: '',
+  dialogContent: null,
+  handleDialog: ({ title, content }) =>
+    set({ dialogTitle: title, dialogContent: content, isOpen: true }),
+  handleDialogClose: () => set({ dialogContent: null, isOpen: false }),
+}))
+
+export const DialogV2 = () => {
+  const dialogStore = useDialogStore()
+  const { isOpen, dialogContent, dialogTitle, handleDialogClose } = dialogStore
+
+  return (
+    <Dialog open={isOpen} onOpenChange={handleDialogClose}>
+      <Dialog.Content title={dialogTitle}>{dialogContent}</Dialog.Content>
+    </Dialog>
+  )
+}
+
+DialogV2.useDialogStore = useDialogStore

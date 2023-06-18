@@ -1,10 +1,10 @@
+import { currentUser } from '@clerk/nextjs'
+import { prisma } from 'db'
+
 import {
   InvitationCard,
   TestAccountCard,
 } from '@components/invitation/InvitationCards'
-import { currentUser } from '@clerk/nextjs'
-
-import { prisma } from 'db'
 import { PageLayout } from '@components/page-layout'
 import { MessageBox } from '../components/invitation/MessageBox'
 

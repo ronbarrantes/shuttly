@@ -1,4 +1,5 @@
 import { SignInButton } from '@clerk/nextjs'
+
 import { PageLayout } from '@components/page-layout'
 
 // TODO: come up with a solution so that the app can be used without being part of a company
