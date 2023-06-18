@@ -110,6 +110,10 @@ export const editRide = async (rideInfo: ZodEditRide) => {
   //   if (!allowed) throw new Error('Number of actions exceeded for today')
   // }
 
+  const useAltAddress = rideInfo.altAddress?.length
+    ? rideInfo.useAltAddress
+    : false
+
   const ride = await prisma.ride.update({
     where: {
       id: rideInfo.id,
@@ -118,8 +122,9 @@ export const editRide = async (rideInfo: ZodEditRide) => {
       scheduledTime: rideInfo.scheduledTime
         ? new Date(rideInfo.scheduledTime)
         : undefined,
-      altAddress: null, //  rideInfo.altAddress?.length ? rideInfo.altAddress : undefined,
+      altAddress: rideInfo.altAddress?.length ? rideInfo.altAddress : undefined,
       driverId: rideInfo.driverId?.length ? rideInfo.driverId : undefined,
+      useAltAddress,
     },
   })
 
