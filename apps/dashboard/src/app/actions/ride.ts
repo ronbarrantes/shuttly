@@ -38,9 +38,9 @@ const rideObj = z
 
 const rideEditObj = z.object({
   id: z.string(),
-  clearAltAddress: z.boolean().optional(),
   scheduledTime: z.date().optional(),
   altAddress: z.string().optional(),
+  useAltAddress: z.boolean().optional(),
   driverId: z.string().optional(),
 })
 

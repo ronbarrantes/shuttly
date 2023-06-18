@@ -4,10 +4,10 @@ import { Table, createColumnHelper } from './react-table'
 
 import dayjs from 'dayjs'
 import { AllRides, DeleteRide, EditRide, ZodEditRide } from '@actions/ride'
-import { Dialog, DialogV2 } from '@components/Dialog'
-import { useState, useTransition } from 'react'
+import { DialogV2 } from '@components/Dialog'
+import { useTransition } from 'react'
 import toast from 'react-hot-toast'
-import { useForm } from 'react-hook-form'
+import { useForm, Controller } from 'react-hook-form'
 import { Switch } from '@components/Switch'
 
 interface DashboardTableProps {
@@ -24,16 +24,9 @@ export const DashboardTable = ({
   const columnHelper = createColumnHelper<AllRides>()
   const [pending, startTransition] = useTransition()
   const dialogStore = DialogV2.useDialogStore()
-  const [rideId, setRideId] = useState('')
 
-  const {
-    watch, // REMOVE LATER
-    register,
-    reset,
-    handleSubmit,
-    setValue,
-    formState: { errors }, // REMOVE LATER
-  } = useForm<ZodEditRide>()
+  const { watch, register, reset, handleSubmit, setValue, control } =
+    useForm<ZodEditRide>()
 
   // What do I wanna display
   // passenger name
@@ -44,20 +37,22 @@ export const DashboardTable = ({
   // has driver
 
   const onSubmit = (data: ZodEditRide) => {
-    startTransition(async () => {
-      try {
-        await editRide(data)
-      } catch (err: unknown) {
-        if (err instanceof Error) {
-          toast.error(err.message, {
-            position: 'top-center',
-          })
-        }
-      }
+    console.log('DATA', data)
 
-      reset()
-      dialogStore.handleDialogClose()
-    })
+    // startTransition(async () => {
+    //   try {
+    //     await editRide(data)
+    //   } catch (err: unknown) {
+    //     if (err instanceof Error) {
+    //       toast.error(err.message, {
+    //         position: 'top-center',
+    //       })
+    //     }
+    //   }
+
+    //   reset()
+    //   dialogStore.handleDialogClose()
+    // })
   }
 
   const handleEditRide = (rideId: string, rideName: string) => {
@@ -68,7 +63,54 @@ export const DashboardTable = ({
         <>
           <p>Editing ride for {rideName}!</p>
 
-          <Switch label="Use Alt address" id="use-alt-address" />
+          {/* <Switch
+            label="Use Alt address"
+            name="use-alt-address"
+            onCheckedChange={}
+          /> */}
+
+          <Controller
+            name={'useAltAddress'}
+            render={({ field }) => {
+              return (
+                <div className="flex flex-col gap-3">
+                  {/* <CreatableSelect
+                    classNamePrefix="multi-select"
+                    isMulti
+                    placeholder={`Add extra ${title.toLowerCase()} items...`}
+                    {...field}
+                    options={makeOptions(defaultSearchFieldValues)}
+                    isClearable={true}
+                    components={{
+                      DropdownIndicator: null,
+                      IndicatorSeparator: null,
+                    }}
+                  /> */}
+                  <Switch
+                    label="Use Alt address"
+                    checked={field.value}
+                    // name="use-alt-address"
+                    // onCheckedChange={}
+                    onCheckedChange={(val: boolean) => {
+                      // setValue(`work_history.${index}.end_date`, null);
+                      // setValue(
+                      //   `work_history.${index}.is_current`,
+                      //   !field.value
+                      // );
+                      console.log('VAL', val)
+                      console.log('field.value', field.value)
+                      setValue('useAltAddress', val)
+
+                      // {...register(field.name)}
+                    }}
+                    {...register(field.name)}
+                  />
+                </div>
+              )
+            }}
+            control={control}
+          />
+
           <form
             className="flex flex-col gap-2"
             onSubmit={handleSubmit(onSubmit)}
@@ -190,7 +232,6 @@ export const DashboardTable = ({
 
       cell: (info) => {
         // info.getValue()
-        console.log(info.row.original.altAddress)
         const address = info.row.original.altAddress?.length
           ? info.row.original.altAddress
           : info.getValue()
