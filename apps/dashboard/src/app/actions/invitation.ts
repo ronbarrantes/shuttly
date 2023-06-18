@@ -57,9 +57,6 @@ export const acceptInvitation = async ({
 
 export const createTestAccount = async ({ userId }: { userId: string }) => {
   const testCompanyId = process.env.TEST_COMPANY_ID
-
-  console.log('testCompanyId', testCompanyId)
-
   const createAccount = () =>
     prisma.account.create({
       data: {
