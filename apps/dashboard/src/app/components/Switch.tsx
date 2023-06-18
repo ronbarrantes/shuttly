@@ -1,6 +1,6 @@
-import * as SwitchPrimitive from '@radix-ui/react-switch'
-
 import React from 'react'
+
+import * as SwitchPrimitive from '@radix-ui/react-switch'
 
 interface SwitchProps {
   label?: string

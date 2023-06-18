@@ -1,5 +1,6 @@
-import { authMiddleware, clerkClient, redirectToSignIn } from '@clerk/nextjs'
 import { NextResponse } from 'next/server'
+
+import { authMiddleware, clerkClient, redirectToSignIn } from '@clerk/nextjs'
 
 export default authMiddleware({
   publicRoutes: ['/sign-in'],

@@ -1,10 +1,12 @@
 import { Metadata } from 'next'
-import { PageLayout } from '@components/page-layout'
-import { DashboardTable } from '@components/DashboardTable'
-import { AddRideForm } from '@components/AddRideForm'
-import { addRide, getAllRides, deleteRide, editRide } from '@actions/ride'
+
+import { addRide, deleteRide, editRide,getAllRides } from '@actions/ride'
 import { currentUser } from '@clerk/nextjs'
+
+import { AddRideForm } from '@components/AddRideForm'
+import { DashboardTable } from '@components/DashboardTable'
 import { DialogV2 } from '@components/Dialog'
+import { PageLayout } from '@components/page-layout'
 
 export const metadata: Metadata = {
   title: 'Shuttly | Dashboard',

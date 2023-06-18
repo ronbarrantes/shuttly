@@ -1,9 +1,11 @@
 'use server'
 
+import { revalidatePath } from 'next/cache'
+
+import { auth, currentUser } from '@clerk/nextjs'
 import { prisma } from 'db'
 import { z } from 'zod'
-import { revalidatePath } from 'next/cache'
-import { auth, currentUser } from '@clerk/nextjs'
+
 import { ratelimit } from '@/client-data/utils/rate-limiter'
 
 // TODO: Create a way to search for the current passengers and add rides to them

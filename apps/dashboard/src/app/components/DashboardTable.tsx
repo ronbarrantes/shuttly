@@ -1,14 +1,15 @@
 'use client'
 
-import { Table, createColumnHelper } from './react-table'
-
-import dayjs from 'dayjs'
-import { AllRides, DeleteRide, EditRide, ZodEditRide } from '@actions/ride'
-import { DialogV2 } from '@components/Dialog'
 import { useTransition } from 'react'
+
+import { AllRides, DeleteRide, EditRide, ZodEditRide } from '@actions/ride'
+import dayjs from 'dayjs'
+import { Controller,useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
-import { useForm, Controller } from 'react-hook-form'
+
+import { DialogV2 } from '@components/Dialog'
 import { Switch } from '@components/Switch'
+import { createColumnHelper,Table } from './react-table'
 
 interface DashboardTableProps {
   rides: AllRides[]
