@@ -1,7 +1,7 @@
 'use server'
 
-import { prisma } from 'db'
 import { clerkClient } from '@clerk/nextjs'
+import { prisma } from 'db'
 
 export const acceptInvitation = async ({
   userId,
