@@ -65,8 +65,6 @@ const DialogTrigger = ({
   children: React.ReactNode
   className?: string
 }) => {
-  /// may have to use the dialogStore to open and close the dialog
-
   return (
     <DialogPrimitive.Trigger asChild>
       <button
@@ -106,7 +104,8 @@ Dialog.Close = DialogClose
 //    VVV     VVV               222
 //     VVV   VVV            222
 //      VVV VVV           222
-//       VVVV             222222222222
+//       VVVVV           2222222222222
+
 interface DialogState {
   isOpen: boolean
   setIsOpen: () => void

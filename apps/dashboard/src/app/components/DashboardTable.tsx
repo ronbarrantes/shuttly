@@ -4,12 +4,12 @@ import { useTransition } from 'react'
 
 import { AllRides, DeleteRide, EditRide, ZodEditRide } from '@actions/ride'
 import dayjs from 'dayjs'
-import { Controller,useForm } from 'react-hook-form'
+import { Controller, useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 
 import { DialogV2 } from '@components/Dialog'
 import { Switch } from '@components/Switch'
-import { createColumnHelper,Table } from './react-table'
+import { createColumnHelper, Table } from './react-table'
 
 interface DashboardTableProps {
   rides: AllRides[]
@@ -82,28 +82,18 @@ export const DashboardTable = ({
                 control={control}
               />
             </div>
-            {/* <input
-              className="px-2 py-1 border rounded-md border-slate-500"
-              placeholder="Phone Number"
-              {...register('phone', { required: true })}
-            /> */}
 
             <input
               type="datetime-local"
-              // defaultValue={dayjs(watch('scheduledTime')).format(
-              //   'YYYY-MM-DDThh:mm'
-              // )}
-              // value={dayjs(watch('scheduledTime')).format('YYYY-MM-DDThh:mm')}
               className="px-2 py-1 border rounded-md h-fit w-fit border-slate-500"
               placeholder="Date"
-              // defaultValue={dateValue}
               max={dayjs().add(2, 'weeks').format('YYYY-MM-DDThh:mm')}
               min={dayjs().format('YYYY-MM-DDThh:mm')}
               {...register('scheduledTime')}
             />
 
             {
-              /// allow to change drivers or something like that
+              /// TODO: allow to change drivers or something like that
             }
 
             <div className="flex gap-2">
@@ -184,20 +174,10 @@ export const DashboardTable = ({
       },
     }),
 
-    // columnHelper.accessor('passenger.name', {
-    //   cell: (info) => info.getValue(),
-    // }),
-    // columnHelper.accessor('passenger.', {
-    //   header: () => <span>Ride Type</span>,
-    //   cell: (info) => {
-    //     return `${info.row.original.rideType}`
-    //   },
-    // }),
     columnHelper.accessor('passenger.address', {
       header: () => <span>Address</span>,
 
       cell: (info) => {
-        // info.getValue()
         const address =
           info.row.original.altAddress?.length &&
           info.row.original.useAltAddress
@@ -253,8 +233,6 @@ export const DashboardTable = ({
       },
     }),
   ]
-
-  // watch input value by passing the name of it
 
   return <Table columns={columns} data={rides} />
 }

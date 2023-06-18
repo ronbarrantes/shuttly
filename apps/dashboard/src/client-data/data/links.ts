@@ -12,6 +12,7 @@ export const mainNavLinks: LinkItemsProps = {
       name: 'Dashboard',
       href: '/',
     },
+    //  TODO: uncomment when ready
     // {
     //   name: 'Settings',
     //   href: '/settings',

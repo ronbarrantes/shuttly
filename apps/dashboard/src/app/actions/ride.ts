@@ -158,8 +158,6 @@ export const deleteRide = async (rideId: string) => {
     },
   })
 
-  console.log('RIDE DELETED ===>>', ride)
-
   revalidatePath('/')
   return ride
 }

@@ -3,7 +3,7 @@ import { useState, useTransition } from 'react'
 
 import { type AddRide, ZodRideType } from '@actions/ride'
 import { useKeepCount } from '@hooks'
-import { MinusIcon,PlusIcon } from '@radix-ui/react-icons'
+import { MinusIcon, PlusIcon } from '@radix-ui/react-icons'
 import classNames from 'classnames'
 import dayjs from 'dayjs'
 import { useForm } from 'react-hook-form'
