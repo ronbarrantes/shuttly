@@ -1,7 +1,8 @@
 import { ClerkProvider } from '@clerk/nextjs'
+import { Toaster } from 'react-hot-toast'
+
 import '../styles/globals.css'
 import 'ui/styles.css'
-import { Toaster } from 'react-hot-toast'
 
 export default function RootLayout({
   children,

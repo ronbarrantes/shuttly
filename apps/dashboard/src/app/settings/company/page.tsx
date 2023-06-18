@@ -1,5 +1,5 @@
-import { PageLayout } from '@components/page-layout'
 import { SettingsPageNav } from '@components/navigation'
+import { PageLayout } from '@components/page-layout'
 
 export default function Settings() {
   return (

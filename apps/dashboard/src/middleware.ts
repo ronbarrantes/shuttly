@@ -1,5 +1,6 @@
-import { authMiddleware, clerkClient } from '@clerk/nextjs'
 import { NextResponse } from 'next/server'
+
+import { authMiddleware, clerkClient } from '@clerk/nextjs'
 
 export default authMiddleware({
   publicRoutes: ['/sign-in'],
@@ -24,14 +25,6 @@ export default authMiddleware({
     ) {
       const invitation = new URL('/invitation', req.url)
       return NextResponse.redirect(invitation)
-    }
-
-    if (
-      usr?.privateMetadata.companyId &&
-      req.nextUrl.pathname === '/invitation'
-    ) {
-      const dashboard = new URL('/', req.url)
-      return NextResponse.redirect(dashboard)
     }
   },
 })

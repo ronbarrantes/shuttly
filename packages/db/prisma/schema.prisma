@@ -130,6 +130,7 @@ model Passenger {
 model Ride {
   id            String    @id @default(cuid())
   altAddress    String?
+  useAltAddress Boolean   @default(false)
   companyId     String
   createdAt     DateTime  @default(now())
   driverId      String?

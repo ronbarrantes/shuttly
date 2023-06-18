@@ -12,10 +12,11 @@ export const mainNavLinks: LinkItemsProps = {
       name: 'Dashboard',
       href: '/',
     },
-    {
-      name: 'Settings',
-      href: '/settings',
-    },
+    //  TODO: uncomment when ready
+    // {
+    //   name: 'Settings',
+    //   href: '/settings',
+    // },
   ],
 }
 

@@ -1,7 +1,7 @@
 'use server'
 
-import { prisma } from 'db'
 import { clerkClient } from '@clerk/nextjs'
+import { prisma } from 'db'
 
 export const acceptInvitation = async ({
   userId,
@@ -57,9 +57,6 @@ export const acceptInvitation = async ({
 
 export const createTestAccount = async ({ userId }: { userId: string }) => {
   const testCompanyId = process.env.TEST_COMPANY_ID
-
-  console.log('testCompanyId', testCompanyId)
-
   const createAccount = () =>
     prisma.account.create({
       data: {
