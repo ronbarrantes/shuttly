@@ -38,7 +38,7 @@ const rideObj = z
 
 const rideEditObj = z.object({
   id: z.string(),
-  scheduledTime: z.date().optional(),
+  scheduledTime: z.string().optional(),
   altAddress: z.string().optional(),
   useAltAddress: z.boolean().optional(),
   driverId: z.string().optional(),
@@ -79,16 +79,14 @@ export const addRide = async (rideInfo: ZodRideType) => {
 
 export const getAllRides = async () => {
   const { userId } = auth()
-
-  console.log('USER ID ===>>', userId)
-  // if (!userId) throw new Error('Not logged in')
+  if (!userId) throw new Error('Not logged in')
 
   const rides = await prisma.ride.findMany({
     include: {
       driver: true,
       passenger: true,
     },
-    take: 10, // for now, get all of them later
+    take: 10,
     orderBy: {
       createdAt: 'desc',
     },
@@ -100,15 +98,13 @@ export const editRide = async (rideInfo: ZodEditRide) => {
   const { userId } = auth()
   if (!userId) throw new Error('Not logged in')
 
-  // const user = await currentUser()
-  // const testAccount = user?.privateMetadata?.testAccount
+  const user = await currentUser()
+  const testAccount = user?.privateMetadata?.testAccount
 
-  console.log('RIDE INFO ===>>', rideInfo)
-
-  // if (testAccount) {
-  //   const { success: allowed } = await ratelimit.limit(userId)
-  //   if (!allowed) throw new Error('Number of actions exceeded for today')
-  // }
+  if (testAccount) {
+    const { success: allowed } = await ratelimit.limit(userId)
+    if (!allowed) throw new Error('Number of actions exceeded for today')
+  }
 
   const useAltAddress = rideInfo.altAddress?.length
     ? rideInfo.useAltAddress
