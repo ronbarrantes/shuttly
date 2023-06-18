@@ -7,7 +7,7 @@ import { AllRides, DeleteRide, EditRide, ZodEditRide } from '@actions/ride'
 import { DialogV2 } from '@components/Dialog'
 import { useTransition } from 'react'
 import toast from 'react-hot-toast'
-import { useForm, Controller } from 'react-hook-form'
+import { useForm, Controller, DefaultValues } from 'react-hook-form'
 import { Switch } from '@components/Switch'
 
 interface DashboardTableProps {
@@ -39,24 +39,33 @@ export const DashboardTable = ({
   const onSubmit = (data: ZodEditRide) => {
     console.log('DATA', data)
 
-    // startTransition(async () => {
-    //   try {
-    //     await editRide(data)
-    //   } catch (err: unknown) {
-    //     if (err instanceof Error) {
-    //       toast.error(err.message, {
-    //         position: 'top-center',
-    //       })
-    //     }
-    //   }
+    startTransition(async () => {
+      try {
+        await editRide(data)
+      } catch (err: unknown) {
+        if (err instanceof Error) {
+          toast.error(err.message, {
+            position: 'top-center',
+          })
+        }
+      }
 
-    //   reset()
-    //   dialogStore.handleDialogClose()
-    // })
+      reset()
+      dialogStore.handleDialogClose()
+    })
   }
 
   const handleEditRide = (rideId: string, rideName: string) => {
     setValue('id', rideId)
+
+    console.log('SCHEDULED TIME ===== ', watch('scheduledTime') instanceof Date)
+
+    const dateValue = dayjs(watch('scheduledTime')).format('YYYY-MM-DDThh:mm')
+    register('scheduledTime', {
+      value: watch('scheduledTime'),
+    })
+
+    console.log()
     dialogStore.handleDialog({
       title: 'Edit ride',
       content: (
@@ -69,71 +78,61 @@ export const DashboardTable = ({
             onCheckedChange={}
           /> */}
 
-          <Controller
-            name={'useAltAddress'}
-            render={({ field }) => {
-              return (
-                <div className="flex flex-col gap-3">
-                  {/* <CreatableSelect
-                    classNamePrefix="multi-select"
-                    isMulti
-                    placeholder={`Add extra ${title.toLowerCase()} items...`}
-                    {...field}
-                    options={makeOptions(defaultSearchFieldValues)}
-                    isClearable={true}
-                    components={{
-                      DropdownIndicator: null,
-                      IndicatorSeparator: null,
-                    }}
-                  /> */}
-                  <Switch
-                    label="Use Alt address"
-                    checked={field.value}
-                    // name="use-alt-address"
-                    // onCheckedChange={}
-                    onCheckedChange={(val: boolean) => {
-                      // setValue(`work_history.${index}.end_date`, null);
-                      // setValue(
-                      //   `work_history.${index}.is_current`,
-                      //   !field.value
-                      // );
-                      console.log('VAL', val)
-                      console.log('field.value', field.value)
-                      setValue('useAltAddress', val)
-
-                      // {...register(field.name)}
-                    }}
-                    {...register(field.name)}
-                  />
-                </div>
-              )
-            }}
-            control={control}
-          />
-
           <form
             className="flex flex-col gap-2"
             onSubmit={handleSubmit(onSubmit)}
           >
-            <input
-              {...register('altAddress')}
-              placeholder="Alternate Address"
-              className="px-2 py-1 border rounded-md border-slate-500"
-            />
+            <div className="flex flex-col">
+              <input
+                {...register('altAddress')}
+                placeholder="Alternate Address"
+                className="px-2 py-1 border rounded-md border-slate-500"
+              />
+              <Controller
+                name={'useAltAddress'}
+                render={({ field }) => {
+                  return (
+                    <Switch
+                      useLabel
+                      label="Use Alt address"
+                      checked={field.value}
+                      onCheckedChange={(val: boolean) =>
+                        setValue('useAltAddress', val)
+                      }
+                      {...register(field.name)}
+                    />
+                  )
+                }}
+                control={control}
+              />
+            </div>
             {/* <input
               className="px-2 py-1 border rounded-md border-slate-500"
               placeholder="Phone Number"
               {...register('phone', { required: true })}
             /> */}
+
             <input
               type="datetime-local"
+              id="meeting-time"
+              name="meeting-time"
+              defaultValue="2018-06-12T19:30"
+              min="2018-06-07T00:00"
+              max="2018-06-14T00:00"
+            />
+
+            <input
+              type="datetime-local"
+              // defaultValue={dayjs(watch('scheduledTime')).format(
+              //   'YYYY-MM-DDThh:mm'
+              // )}
+              // value={dayjs(watch('scheduledTime')).format('YYYY-MM-DDThh:mm')}
               className="px-2 py-1 border rounded-md h-fit w-fit border-slate-500"
               placeholder="Date"
+              defaultValue={dateValue}
               max={dayjs().add(2, 'weeks').format('YYYY-MM-DDThh:mm')}
               min={dayjs().format('YYYY-MM-DDThh:mm')}
-              {...register('scheduledTime', {
-                required: true,
-              })}
+              {...register('scheduledTime')}
             />
 
             {
@@ -232,16 +231,20 @@ export const DashboardTable = ({
 
       cell: (info) => {
         // info.getValue()
-        const address = info.row.original.altAddress?.length
-          ? info.row.original.altAddress
-          : info.getValue()
+        const address =
+          info.row.original.altAddress?.length &&
+          info.row.original.useAltAddress
+            ? info.row.original.altAddress
+            : info.getValue()
         return address
       },
     }),
     columnHelper.accessor('scheduledTime', {
       header: () => <span>Scheduled Time</span>,
       cell: (info) => {
-        const time = dayjs(info.row.original.scheduledTime).format('h:mma')
+        const time = dayjs(info.row.original.scheduledTime).format(
+          'MMM DD [at] h:mma'
+        )
         return time
       },
     }),
@@ -257,11 +260,9 @@ export const DashboardTable = ({
               type="button"
               className="btn btn-secondary"
               onClick={() => {
-                // setIsOpen(true)
-                // setRideId(info.row.original.id)
-                console.log('====================================')
-                console.log('EDITING')
-                console.log('====================================')
+                setValue('useAltAddress', info.row.original.useAltAddress)
+                setValue('altAddress', info.row.original?.altAddress || '')
+                setValue('scheduledTime', info.row.original.scheduledTime)
                 handleEditRide(
                   info.row.original.id,
                   info.row.original.passenger.name
