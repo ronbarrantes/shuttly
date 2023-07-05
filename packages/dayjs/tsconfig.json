@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "lib": ["ES2015", "DOM"],
+    "module": "CommonJS",
+    "moduleResolution": "node",
+    "baseUrl": ".",
+    "outDir": "./dist"
+  },
+  "exclude": ["node_modules", "dist/**/*"],
+  "extends": "../tsconfig/base.json",
+  // "extends": "tsconfig/react-library.json",
+  "include": ["index.ts"]
+}

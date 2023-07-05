@@ -3,17 +3,44 @@
   "globalDependencies": ["**/.env.*local"],
   "pipeline": {
     "build": {
-      "dependsOn": ["^build"],
-      "outputs": ["dist/**", ".next/**", "!.next/cache/**"]
+      "dependsOn": ["^build", "^db:generate"],
+      "outputs": ["dist/**", ".next/**"]
     },
     "lint": {},
     "check-types": {},
     "dev": {
+      "dependsOn": ["^db:generate"],
       "cache": false,
       "persistent": true
     },
     "clean": {
       "cache": false
+    },
+    "db:generate": {
+      "inputs": ["db/schema.prisma"]
+    },
+    "db:push": {
+      "cache": false
+    },
+    "ui": {
+      "dependsOn": ["^build"],
+      "cache": false,
+      "persistent": true
+    },
+    "studio": {
+      "cache": true
     }
-  }
+  },
+  "globalEnv": [
+    "CI",
+    "DATABASE_URL",
+    "DISCORD_CLIENT_ID",
+    "DISCORD_CLIENT_SECRET",
+    "EXPO_ROUTER_APP_ROOT",
+    "NODE_ENV",
+    "SKIP_ENV_VALIDATION",
+    "VERCEL",
+    "VERCEL_URL",
+    "TEST_COMPANY_ID"
+  ]
 }

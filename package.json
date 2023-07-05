@@ -3,16 +3,19 @@
   "scripts": {
     "build": "turbo build",
     "dev": "turbo dev",
+    "studio": "turbo run studio",
     "lint": "turbo lint",
     "clean": "turbo clean",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\""
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "deploy-request": "pscale deploy-request create shuttle dev"
   },
   "devDependencies": {
     "eslint": "^7.32.0",
     "eslint-config-custom": "workspace:*",
-    "prettier": "^2.7.1",
-    "prettier-plugin-tailwindcss": "^0.1.11",
-    "turbo": "^1.9.3"
+    "eslint-plugin-simple-import-sort": "^10.0.0",
+    "prettier": "^2.8.8",
+    "prettier-plugin-tailwindcss": "^0.1.13",
+    "turbo": "^1.10.3"
   },
   "packageManager": "pnpm@7.15.0"
 }
