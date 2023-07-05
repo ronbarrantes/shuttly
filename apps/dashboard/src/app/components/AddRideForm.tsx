@@ -53,7 +53,6 @@ export const AddRideForm = ({ addRide, companyId }: AddRideFormProps) => {
 
       reset()
       resetCount()
-      setIsOpen(false)
     })
   }
 
@@ -73,10 +72,10 @@ export const AddRideForm = ({ addRide, companyId }: AddRideFormProps) => {
           <input
             {...register('address', { required: true })}
             placeholder="Address"
-            className="px-2 py-1 border rounded-md border-slate-500"
+            className="rounded-md border border-slate-500 px-2 py-1"
           />
           <input
-            className="px-2 py-1 border rounded-md border-slate-500"
+            className="rounded-md border border-slate-500 px-2 py-1"
             placeholder="Phone Number"
             {...register('phone', { required: true })}
           />
@@ -85,12 +84,12 @@ export const AddRideForm = ({ addRide, companyId }: AddRideFormProps) => {
             return (
               <div
                 key={`${rideIdx}-${idx}`}
-                className="flex flex-col gap-3 py-3 border-b border-slate-200"
+                className="flex flex-col gap-3 border-b border-slate-200 py-3"
               >
                 <div className="relative flex items-center justify-between">
                   <input
                     type="datetime-local"
-                    className="px-2 py-1 border rounded-md h-fit w-fit border-slate-500"
+                    className="h-fit w-fit rounded-md border border-slate-500 px-2 py-1"
                     placeholder="Date"
                     max={dayjs().add(2, 'month').format('YYYY-MM-DDThh:mm')}
                     min={dayjs().format('YYYY-MM-DDThh:mm')}
@@ -112,7 +111,7 @@ export const AddRideForm = ({ addRide, companyId }: AddRideFormProps) => {
                     }}
                     disabled={loCountBound}
                   >
-                    <MinusIcon className="w-4 h-4" />
+                    <MinusIcon className="h-4 w-4" />
                   </button>
                 </div>
 
@@ -159,7 +158,7 @@ export const AddRideForm = ({ addRide, companyId }: AddRideFormProps) => {
                 if (!hiCountBound) increment()
               }}
             >
-              <PlusIcon className="w-4 h-4" />
+              <PlusIcon className="h-4 w-4" />
             </button>
           </div>
           <button className="btn btn-primary" type="submit" disabled={pending}>
