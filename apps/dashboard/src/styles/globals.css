@@ -7,7 +7,7 @@ body {
 }
 
 .btn {
-  @apply w-fit rounded-md p-3 py-2 font-bold disabled:bg-gray-500;
+  @apply p-3 py-2 font-bold rounded-md w-fit disabled:bg-gray-500;
 }
 
 .btn-primary {
